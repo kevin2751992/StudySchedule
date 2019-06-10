@@ -1,7 +1,7 @@
 const express = require( "express");
 const http= require("http");
 const path= require("path");
-//const dbClient= require("mongodb").MongoClient;
+const dbClient= require("mongodb").MongoClient;
 
 // create server
 let server = express();
@@ -21,7 +21,7 @@ http.createServer(server).listen(port, function () {
 });
 
 
-/*dbClient.connect("mongodb://localhost:27017/Library", (error, db) => { 
+dbClient.connect("mongodb://localhost:27017/Library", (error, db) => { 
 
 	if (error) {
 		 console.error(error); process.exit(-1); 
@@ -33,7 +33,7 @@ http.createServer(server).listen(port, function () {
 	 }
 	
 	finally { db.close(); }
- });*/
+ });
 
 
 
