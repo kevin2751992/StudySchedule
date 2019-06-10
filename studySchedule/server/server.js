@@ -21,4 +21,19 @@ http.createServer(server).listen(port, function () {
 });
 
 
+dbClient.connect("mongodb://localhost:27017/Library", (error, db) => { 
+
+	if (error) {
+		 console.error(error); process.exit(-1); 
+	}
+	console.log("Connected to MongoDB."); 
+	
+	try { 
+		console.log("do stuff here");
+	 }
+	
+	finally { db.close(); }
+ });
+
+
 

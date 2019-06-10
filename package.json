@@ -9,25 +9,21 @@
     "predebug": "npm install",
     "debug": "npm run lint && npm run debug:js && npm run debug:css",
     "lint": "eslint ./studySchedule/client/src/js/**",
-    "css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css -x" ,
+    "css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css -x",
     "debug:js": "browserify ./studySchedule/client/src/js/main.js -o ./studySchedule/client/prod/js/main.js",
     "build": " npm run lint && npm run js:min && npm run css && cp ./studySchedule/client/src/index.html ./studySchedule/client/prod/index.html",
     "postdebug": "npm run css && npm run js",
-    "js:min":" browserify ./studySchedule/client/src/js/main.js | babel --presets minify -o ./studySchedule/client/prod/js/main.js ",
+    "js:min": " browserify ./studySchedule/client/src/js/main.js | babel --presets minify -o ./studySchedule/client/prod/js/main.js ",
     "clean": "npm run clean:dist && rm -rf node_modules",
     "clean:dist": "rm –rf dist",
-	"debug:css" : "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css "
-	
-    
-    
+    "debug:css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css "
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "browserify": "^16.2.3",
     "express": "^4.17.0",
-    "mongod": "^2.0.0",
-    "mongodb": "^3.2.5"
+    "mongod": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
