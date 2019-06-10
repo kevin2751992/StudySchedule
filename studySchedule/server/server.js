@@ -1,7 +1,9 @@
 const express = require( "express");
 const http= require("http");
 const path= require("path");
-const dbClient= require("mongodb").MongoClient;
+const mongoClient= require("mongodb").MongoClient;
+const dbUri= "mongodb+srv://userOne:open@studyscheduledb-s6ye8.mongodb.net/test?retryWrites=true&w=majority";
+const client = new mongoClient(dbUri, { useNewUrlParser: true });
 
 // create server
 let server = express();
@@ -21,7 +23,7 @@ http.createServer(server).listen(port, function () {
 });
 
 
-dbClient.connect("mongodb://localhost:27017/Library", (error, db) => { 
+client.connect( (error, db) => { 
 
 	if (error) {
 		 console.error(error); process.exit(-1); 
@@ -32,7 +34,7 @@ dbClient.connect("mongodb://localhost:27017/Library", (error, db) => {
 		console.log("do stuff here");
 	 }
 	
-	finally { db.close(); }
+	finally { client.close(); }
  });
 
 
