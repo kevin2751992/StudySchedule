@@ -16,7 +16,8 @@
     "js:min": " browserify ./studySchedule/client/src/js/main.js | babel --presets minify -o ./studySchedule/client/prod/js/main.js ",
     "clean": "npm run clean:dist && rm -rf node_modules",
     "clean:dist": "rm –rf dist",
-    "debug:css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css "
+    "debug:css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css ",
+    "start-watch": "nodemon ./studySchedule/server/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -32,6 +33,7 @@
     "babel-preset-minify": "^0.5.0",
     "babelify": "^10.0.0",
     "eslint": "^5.16.0",
-    "less": "^3.9.0"
+    "less": "^3.9.0",
+    "nodemon": "^1.19.1"
   }
 }
