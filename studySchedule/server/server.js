@@ -28,12 +28,3 @@ client.connect((error, db) => {
 
 });
 
-
-
-
-
-
-
-
-
-
