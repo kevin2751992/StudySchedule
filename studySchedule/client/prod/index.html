@@ -12,6 +12,22 @@
 
     <div>Hello World</div>
     <input id="clickMe" type="button" value="getInformatik" onclick=getInformatik() />
+	<label> 
+	<br> Wie groß soll der minimal erlaubte Umfang aller Module in ECTS-Punkten sein?</label>
+	<input type="text" name=eingabeUmfangEcts id="minEcts" value=""/> <br>
+	<label> 
+	<br> Wie viele ECTS-Punkte möchtest du maximal pro Semester haben?</label>
+	<input type="text" name=ectsPerSem id="ectsPerSem" value=""/> <br>
+	<label> 
+	<br> Wie viele Semester möchtest du studieren?</label>
+	<input type="text" name=numberOfSemester id="numberOfSem" value=""/> <br>
+	<input id="save" type="button" value="Speichern" onclick=speichern() />
+	<br>
+	<br>
+	<br>
+	<br>
+	<input id="initalize" type="button" value="initalize" onclick=init() />
+
 
 </body>
 
