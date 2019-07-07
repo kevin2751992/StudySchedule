@@ -98,16 +98,41 @@ function tabelproduce() {
 	// semesteranzahl angegeben= Zeilen
 	// wieviele ECTS pro semester = Spalten
 	let moduleRows = numberOfSem;
-	let moduleColumns = ectsPerSem / minEcts;
-	let matrix = moduleColumns * moduleRows;
-	let table = [];
-	let body = document.getElementsByTagName("body")[0];
+	let moduleColumns = (ectsPerSem / minEcts);
+	//container
+	let table = document.createElement("div");
+	table.className = "divTable";
+	//tablebody
+	let tablebody = document.createElement("div");
+	tablebody.className = "tableBody";
+	table.appendChild(tablebody);
+
+	let body = document.getElementById("tableId");
 	for (let i = 0; i < moduleRows; i++) {
+		let divRow = document.createElement("div");
+		divRow.className = "divTableRow";
+		tablebody.appendChild(divRow);
 		for (let j = 0; j < moduleColumns; j++) {
-			let div = document.createElement("div");
-			div.className = `table_${i}`;
-			body.appendChild(div);
+			let widtcolumn = 100 / moduleColumns;
+			let divColumn = document.createElement("div");
+			divColumn.value = "column" + j;
+			divColumn.addEventListener("click", getModule);
+			divColumn.className = "divTableCell";
+			divColumn.style.width = "50";
+			divColumn.innerHTML = "Wahlpflichtfach";
+			divRow.appendChild(divColumn);
 		}
+	}
+	body.appendChild(table);
+}
+
+function getModule(event) {
+	var source = event.target || event.srcElement;
+	console.log(source.value);
+	console.log("test");
+	if (window.event) {
+		// IE8 and earlier
+		// doSomething
 	}
 }
 window.speichern = speichern;

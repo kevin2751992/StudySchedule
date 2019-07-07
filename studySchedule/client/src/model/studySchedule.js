@@ -24,7 +24,6 @@ let StudyscheduleSchema = new mongoose.Schema({
 
 });
 
-
 //module.exports = mongoose.model("StudySchedule", StudyscheduleSchema);
 module.exports = StudyscheduleSchema;
 module.exports.modelSchema = function (name, collection) {

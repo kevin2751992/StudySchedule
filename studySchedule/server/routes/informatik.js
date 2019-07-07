@@ -27,23 +27,24 @@ informaticRouter.post("/informatik", (req, res) =>{
 
 	let InformaticStudySchedule = StudyScheduleSchema.modelSchema("InformaticStudySchedule", "Informatik");
 	mongoose.connect(dbUri, { useNewUrlParser: true })
-	.then((conn) => {
-		let studySchedule = new InformaticStudySchedule(req.body);
-		studySchedule.save()
-		.then(doc=>{
-			if (!doc || doc.length === 0) {
-				return res.status(500).send(doc);
-			}
-			return res.status(201).send({ inserted: JSON.stringify(doc) });
-		})
-		.catch(err=>{
-			return res.status(500).send({ data: JSON.stringify(err) });
-		})
-		.finally(() => {
-			mongoose.disconnect((msg) => {
-				console.log("All connections closed. ", msg);
-			});
+		.then((conn) => {
+			let studySchedule = new InformaticStudySchedule(req.body);
+			studySchedule.save()
+				.then(doc=>{
+					if (!doc || doc.length === 0) {
+						return res.status(500).send(doc);
+					}
+					return res.status(201).send({ inserted: JSON.stringify(doc) });
+				})
+				.catch(err=>{
+					return res.status(500).send({ data: JSON.stringify(err) });
+				})
+				.finally(() => {
+					mongoose.disconnect((msg) => {
+						console.log("All connections closed. ", msg);
+					});
+				});
 		});
-	});
+	return null;
 });
 module.exports = informaticRouter;
