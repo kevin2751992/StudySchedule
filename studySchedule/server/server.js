@@ -21,9 +21,10 @@ client.connect((error, db) =>{
 	console.log("Connected to MongoDB.");
 
 	database = db;
+	server.use(parser.urlencoded({ extended: true }));
+	server.use(parser.json());
 	server.use(express.static("./studySchedule/client/prod/"));
 	server.listen(port, ()=>console.log("Server started on Port", port));
 	server.use(informatikRoutes);
 	server.use(wirtschaftRoutes);
-	server.use(parser);
 });

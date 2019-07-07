@@ -1,6 +1,7 @@
 const express = require("express");
 // eslint-disable-next-line new-cap
 let informaticRouter = express.Router();
+//informaticRouter.use(require("body-parser").json());
 let InformaticStudySchedule = require("../../client/src/model/studySchedule");
 informaticRouter.get("/informatik", (req, res)=>{
 	res.send("You requested Informatik");
@@ -8,9 +9,8 @@ informaticRouter.get("/informatik", (req, res)=>{
 
 //Create new Informatik StudySchedule
 informaticRouter.post("/informatik", (req, res) =>{
-	console.log("request:", req);
 	if (!req.body) {
-		return res.status(400).send("Body is missing");
+		return res.status(400).send("Body is ");
 	}
 	/* ----Example Schema ----
 		StudySchedule={
@@ -21,18 +21,18 @@ informaticRouter.post("/informatik", (req, res) =>{
 		scheduleId: someID
 		}
 		*/
-	let studySchedule = new InformaticStudySchedule(req.body);
-	studySchedule.save()
-		.then(doc=>{
-			if (!doc || doc.length === 0) {
-				return res.status(500).send(doc);
-			}
-			return res.status(201);
-		})
-		.catch(err=>{
-			return res.status(500).json(err);
-		});
+	// let studySchedule = new InformaticStudySchedule(req.body);
+	// studySchedule.save()
+	// 	.then(doc=>{
+	// 		if (!doc || doc.length === 0) {
+	// 			return res.status(500).send(doc);
+	// 		}
+	// 		return res.status(201);
+	// 	})
+	// 	.catch(err=>{
+	// 		return res.status(500).json(err);
+	// 	});
 
-	return null;
+	return res.status(201).send({data: "alles jut"});
 });
 module.exports = informaticRouter;

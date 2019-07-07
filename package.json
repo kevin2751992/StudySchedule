@@ -12,7 +12,6 @@
     "css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css -x",
     "debug:js": "browserify ./studySchedule/client/src/js/main.js -o ./studySchedule/client/prod/js/main.js",
     "build": " npm run lint && npm run js:min && npm run css && cp ./studySchedule/client/src/index.html ./studySchedule/client/prod/index.html",
-    "postdebug": "npm run css && npm run js",
     "js:min": " browserify ./studySchedule/client/src/js/main.js | babel --presets minify -o ./studySchedule/client/prod/js/main.js ",
     "clean": "npm run clean:dist && rm -rf node_modules",
     "clean:dist": "rm –rf dist",
