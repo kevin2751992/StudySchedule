@@ -89,7 +89,7 @@ function speichern() {
 		alert("Sie müssen alle Felder ausfuellen!");
 	}
 	else {
-		return;
+		tabelproduce();
 	}
 }
 
@@ -97,6 +97,18 @@ function speichern() {
 function tabelproduce() {
 	// semesteranzahl angegeben= Zeilen
 	// wieviele ECTS pro semester = Spalten
+	let moduleRows = numberOfSem;
+	let moduleColumns = ectsPerSem / minEcts;
+	let matrix = moduleColumns * moduleRows;
+	let table = [];
+	let body = document.getElementsByTagName("body")[0];
+	for (let i = 0; i < moduleRows; i++) {
+		for (let j = 0; j < moduleColumns; j++) {
+			let div = document.createElement("div");
+			div.className = `table_${i}`;
+			body.appendChild(div);
+		}
+	}
 }
 window.speichern = speichern;
 window.getInformatik = getInformatik;
