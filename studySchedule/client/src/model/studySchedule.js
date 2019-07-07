@@ -1,7 +1,4 @@
 let mongoose = require("mongoose");
-let dbUri = "mongodb+srv://userOne:open@studyscheduledb-s6ye8.mongodb.net/test?retryWrites=true&w=majority";
-
-mongoose.connect(dbUri, { useNewUrlParser: true });
 
 let Module = new mongoose.Schema({
 
@@ -27,4 +24,9 @@ let StudyscheduleSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model("StudySchedule", StudyscheduleSchema);
+
+//module.exports = mongoose.model("StudySchedule", StudyscheduleSchema);
+module.exports = StudyscheduleSchema;
+module.exports.modelSchema = function (name, collection) {
+	return mongoose.model(name, StudyscheduleSchema, collection);
+};

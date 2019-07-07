@@ -18,8 +18,10 @@ wirtschaftsRouter.post("/wirtschaft", (req, res) => {
 			if (error) { console.error(error); process.exit(-1); }
 			console.log("Connected to MongoDB.");
 			try {
-				let db = client.db("StudySchedule");
-				let dbCollection = db.collection("Wirtschaft");
+				let db = client.db("StudyScheduleDB");
+				console.log("DB => ", db);
+				let dbCollection = db.collection("Informatik");
+				console.log("Collection => ", dbCollection);
 				dbCollection.insertOne(req.body, (err, result)=>{
 					if (err) {
 						console.log(err);

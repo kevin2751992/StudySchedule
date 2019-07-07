@@ -1,31 +1,47 @@
+const mongoose = require("mongoose");
 function initAndPushDataSet() {
 	console.log("in initAndkdhfkdshf");
-	// var request = require("request");
-
-	// var options = {
-	// 	method: "POST",
-	// 	url: "http://localhost:8080/informatik",
-	// 	headers: { "content-type": "application/json" },
-	// 	body: JSON.stringify("{name: \"Informatik\",semester: 6,ectsPerSem: 30,semesters: [{module: [{name: \"Webentwicklung\",ects: 5,id: 1,unique: {unique: true}},{}]}]}")
-	// };
-	let l = JSON.stringify({ name: "Informatik", semester: 6, ectsPerSem: 30, semesters: [{ module: [{ name: "Webentwicklung", ects: 5, id: 1, unique: { unique: true } }, { }] }] }).length;
-	console.log("length: ", l);
-	fetch("http://localhost:8080/informatik", {
+	var request = require("request");
+	var payload = {
+		name: "Informatik",
+		semester: 6,
+		ectsPerSem: 30,
+		semesters: [{
+			module: [{
+				name: "Webentwicklung",
+				ects: 5,
+				id: new mongoose.Types.ObjectId()
+			}, {
+				name: "Webtechnologien",
+				ects: 5,
+				id: new mongoose.Types.ObjectId()
+			}]
+		}]
+	};
+	var options = {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ name: "Informatik", semester: 6, ectsPerSem: 30, semesters: [{ module: [{ name: "Webentwicklung", ects: 5, id: 1, unique: { unique: true } }, { }] }] })
-	}).then((response) => {
-		response.json().then((jsonData) => {
-			console.log("response: ", jsonData);
-		});
-	});
-	// request(options, function (error, response, body) {
-	// 	console.log(error);
-	// 	console.log(response);
-	// 	console.log(body);
+		url: "http://localhost:8080/informatik",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(payload)
+	};
+	// let l = JSON.stringify({ name: "Informatik", semester: 6, ectsPerSem: 30, semesters: [{ module: [{ name: "Webentwicklung", ects: 5, id: 1, unique: { unique: true } }, { }] }] }).length;
+	// console.log("length: ", l);
+	// fetch("http://localhost:8080/informatik", {
+	// 	method: "POST",
+	// 	headers: {
+	// 		"Content-Type": "application/json"
+	// 	},
+	// 	body: JSON.stringify({ name: "Informatik", semester: 6, ectsPerSem: 30, semesters: [{ module: [{ name: "Webentwicklung", ects: 5, id: 1, unique: { unique: true } }, { }] }] })
+	// }).then((response) => {
+	// 	response.json().then((jsonData) => {
+	// 		console.log("response: ", jsonData);
+	// 	});
 	// });
+	request(options, function (error, response, body) {
+		console.log(error);
+		console.log(response);
+		console.log(body);
+	});
 }
 
 function getInformatik() {
@@ -40,28 +56,20 @@ function getInformatik() {
 
 function postWirtschaft() {
 	var request = require("request");
-	// var options = {
-	// 	method: "POST",
-	// 	url: "http://localhost:8080/wirtschaft",
-	// 	headers: { "content-type": "application/json" },
-	// 	body: {
-	// 		name: "Informatik",
-	// 		semester: 6,
-	// 		ectsPerSem: 30,
-	// 	},
-	// 	json: true,
-	// };
-	// request.post(options, function (error, response, body) {
-	// 	if (error) { throw new Error(error); }
-
-	// 	console.log(body);
-	// });
-	fetch("http://localhost:8080/wirtschaft", {
+	let payload = {
+		name: "Informatik",
+		semester: 6,
+		ectsPerSem: 30,
+	};
+	var options = {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({ name: "Informatik" })
+		url: "http://localhost:8080/wirtschaft",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(payload)
+	};
+	request(options, (err, res, body) => {
+		console.log("response: ", res);
+		console.log("body: ", body);
 	});
 }
 
