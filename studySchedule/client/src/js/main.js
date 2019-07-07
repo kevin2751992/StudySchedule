@@ -1,3 +1,37 @@
+function initAndPushDataSet() {
+	var request = require("request");
+
+	var options = {
+		method: "POST",
+		url: "http://localhost:8080/informatik",
+		headers: { "content-type": "application/json" },
+		body: {
+			name: "Informatik",
+			semester: 6,
+			ectsPerSem: 30,
+			semesters: [{
+				module: [{
+					name: "Webentwicklung",
+					ects: 5,
+					id: 1,
+					unique: {
+						unique: true
+					}
+				},
+				{
+
+				}]
+			}]
+		}
+	};
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+
+		console.log(body);
+	});
+}
+
 function getInformatik() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik" };
@@ -8,7 +42,26 @@ function getInformatik() {
 	});
 }
 
-window.getInformatik = getInformatik;
+function postWirtschaft() {
+	var request = require("request");
+	var options = {
+		method: "POST",
+		url: "http://localhost:8080/wirtschaft",
+		headers: { "content-type": "application/json" },
+		body: {
+			name: "Informatik",
+			semester: 6,
+			ectsPerSem: 30,
+		},
+		json: true,
+	};
+	request.post(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+
+		console.log(body);
+	});
+}
+
 let minEcts = "";
 let ectsPerSem = "";
 let numberOfSem = "";
@@ -29,8 +82,12 @@ function speichern() {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars
 function tabelproduce() {
 	// semesteranzahl angegeben= Zeilen
 	// wieviele ECTS pro semester = Spalten
 }
 window.speichern = speichern;
+window.getInformatik = getInformatik;
+window.initAndPushDataSet = initAndPushDataSet;
+window.postWirtschaft = postWirtschaft;

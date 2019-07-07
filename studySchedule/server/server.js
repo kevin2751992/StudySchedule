@@ -7,6 +7,7 @@ const parser = require("body-parser");
 
 //Routes for Handling Http Req
 const informatikRoutes = require("./routes/informatik");
+const wirtschaftRoutes = require("./routes/wirtschaft");
 
 // create server
 let server = express();
@@ -23,5 +24,6 @@ client.connect((error, db) =>{
 	server.use(express.static("./studySchedule/client/prod/"));
 	server.listen(port, ()=>console.log("Server started on Port", port));
 	server.use(informatikRoutes);
+	server.use(wirtschaftRoutes);
 	server.use(parser);
 });

@@ -8,6 +8,7 @@ informaticRouter.get("/informatik", (req, res)=>{
 
 //Create new Informatik StudySchedule
 informaticRouter.post("/informatik", (req, res) =>{
+	console.log("request:", req);
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
