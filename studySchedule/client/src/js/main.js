@@ -25,19 +25,7 @@ function initAndPushDataSet() {
 		headers: { "content-type": "application/json" },
 		body: JSON.stringify(payload)
 	};
-	// let l = JSON.stringify({ name: "Informatik", semester: 6, ectsPerSem: 30, semesters: [{ module: [{ name: "Webentwicklung", ects: 5, id: 1, unique: { unique: true } }, { }] }] }).length;
-	// console.log("length: ", l);
-	// fetch("http://localhost:8080/informatik", {
-	// 	method: "POST",
-	// 	headers: {
-	// 		"Content-Type": "application/json"
-	// 	},
-	// 	body: JSON.stringify({ name: "Informatik", semester: 6, ectsPerSem: 30, semesters: [{ module: [{ name: "Webentwicklung", ects: 5, id: 1, unique: { unique: true } }, { }] }] })
-	// }).then((response) => {
-	// 	response.json().then((jsonData) => {
-	// 		console.log("response: ", jsonData);
-	// 	});
-	// });
+
 	request(options, function (error, response, body) {
 		console.log(error);
 		console.log(response);
@@ -76,7 +64,7 @@ function getInfSummerSemester() {
 		console.log(body);
 	});
 }
-//
+//Get WinterSemesterModule of selected Schedule
 function getInfWinterSemesterModules() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik/Wintersemester/Modules" };
@@ -86,6 +74,7 @@ function getInfWinterSemesterModules() {
 		console.log(body);
 	});
 }
+//Get SummerSemesterModule of selected Schedule
 function getInfSummerSemesterModules() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik/Sommersemester/Modules" };
@@ -96,6 +85,7 @@ function getInfSummerSemesterModules() {
 	});
 }
 
+//Update Schedule
 function updateInfSchedule() {
 	console.log("Update Function triggered");
 	var request = require("request");
@@ -127,6 +117,21 @@ function updateInfSchedule() {
 		console.log(body);
 	});
 }
+
+function deleteInfSchedule() {
+	console.log("Update Function triggered");
+	var request = require("request");
+	var options = {
+		method: "DELETE",
+		url: "http://localhost:8080/informatik/5d23677372a8725a146632a6",
+		headers: { "content-type": "application/json" },
+	};
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+
 function postWirtschaft() {
 	var request = require("request");
 	let payload = {
@@ -221,6 +226,8 @@ window.getInfSummerSemesterModules = getInfSummerSemesterModules;
 window.getInfWinterSemesterModules = getInfWinterSemesterModules;
 //Update
 window.updateInfSchedule = updateInfSchedule;
+//Delete
+window.deleteInfSchedule = deleteInfSchedule;
 
 window.initAndPushDataSet = initAndPushDataSet;
 window.postWirtschaft = postWirtschaft;

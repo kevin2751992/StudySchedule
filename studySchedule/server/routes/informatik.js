@@ -132,6 +132,28 @@ informaticRouter.put("/informatik/:id", (req, res) =>{
 	return null;
 });
 
+informaticRouter.delete("/informatik/:id", (req, res) =>{
+	console.log("DeleteMethod was triggered");
+	if (!req.body) {
+		return res.status(400).send("Body is missing");
+	}
+	mongoose.connect(dbUri, { useNewUrlParser: true })
+		.then((conn)=>{
+			InformaticStudySchedule.findByIdAndRemove(req.params.id).exec().then(result=> {
+				return res.status(201).send(result);
+			})
+				.catch(err=>{
+					return res.status(500).send({ data: JSON.stringify(err) });
+				})
+				.finally(() => {
+					mongoose.disconnect((msg) => {
+						console.log("All connections closed. ", msg);
+					});
+				});
+		});
+	return null;
+});
+
 //Create new Informatik StudySchedule
 informaticRouter.post("/informatik", (req, res) =>{
 	if (!req.body) {
