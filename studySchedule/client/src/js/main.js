@@ -6,6 +6,7 @@ function initAndPushDataSet() {
 		name: "Informatik",
 		semester: 6,
 		ectsPerSem: 30,
+		semesterTiming: "Wintersemester",
 		semesters: [{
 			module: [{
 				name: "Webentwicklung",
@@ -44,9 +45,28 @@ function initAndPushDataSet() {
 	});
 }
 
-function getInformatik() {
+function getAllInformatikSchedules() {
 	var request = require("request");
-	var options = { method: "GET", url: "http://localhost:8080/informatik" };
+	var options = { method: "GET", url: "http://localhost:8080/informatik/" };
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+function getInformatikWinterSemester() {
+	var request = require("request");
+	var options = { method: "GET", url: "http://localhost:8080/informatik/Wintersemester" };
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+
+function getInformatikSummerSemester() {
+	var request = require("request");
+	var options = { method: "GET", url: "http://localhost:8080/informatik/Sommersemester" };
 
 	request(options, function (error, response, body) {
 		if (error) { throw new Error(error); }

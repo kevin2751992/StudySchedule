@@ -19,6 +19,7 @@ let StudyscheduleSchema = new mongoose.Schema({
 	semester: Number,
 	ectsPerSem: Number,
 	minEctsPerSem: Number,
+	semesterTiming: String,
 	semesters: [Semester],
 	scheduleId: mongoose.SchemaTypes.ObjectId
 
