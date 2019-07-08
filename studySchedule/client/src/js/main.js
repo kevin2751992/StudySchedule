@@ -44,6 +44,8 @@ function initAndPushDataSet() {
 	});
 }
 
+var newModulvalue;
+
 function getInformatik() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik" };
@@ -78,19 +80,37 @@ let ectsPerSem = "";
 let numberOfSem = "";
 
 function speichern() {
-	//checkFormular() // auf number überprüfen, validieren der userdaten
 	minEcts = document.getElementById("minEcts").value;
 	ectsPerSem = document.getElementById("ectsPerSem").value;
 	numberOfSem = document.getElementById("numberOfSem").value;
 	console.log("ECTS:", minEcts);
 	console.log("ectsPerSem:", ectsPerSem);
 	console.log("numberOfSem:", numberOfSem);
+	checkInput();
+	tabelproduce();
 	if (minEcts === "") {
 		alert("Sie müssen alle Felder ausfuellen!");
 	}
 	else {
 		tabelproduce();
 	}
+}
+function checkInput() {
+	var regEx = /^[0-9]+$/;
+	if (minEcts.match(regEx) && ectsPerSem.match(regEx) && numberOfSem.match(regEx)) {
+		console.log("es sind alles zahlen");
+		if (ectsPerSem % minEcts === 0) {
+			console.log("ectspersem ist vielfaches von minects");
+			return;
+		}
+		else {
+			alert("Die zu erreichenden ECTS pro Semester sind nicht modular zu der minimales ECTS für ein Modul.");
+		}
+	}
+	else {
+		alert("Must input numbers");
+	}
+	return;
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -126,15 +146,59 @@ function tabelproduce() {
 	body.appendChild(table);
 }
 
+function modulGetsNemValue(value) {
+	newModulvalue = value;
+	console.log("ruft modulgetnewvalue auf");
+}
+
+var tmp;
+
 function getModule(event) {
 	var source = event.target || event.srcElement;
+	tmp = source;
 	console.log(source.value);
-	console.log("test");
+	let newline = document.createElement("br");
+	source.appendChild(newline);
+	//loeschen
+	var buttonDelete = document.createElement("button");
+	buttonDelete.value = "loeschen";
+	buttonDelete.style.height = "50";
+	buttonDelete.style.width = "50";
+	source.appendChild(buttonDelete);
+	buttonDelete.addEventListener("click", deleteModul);
+	//neu erstellen
+	var buttonNewModul = document.createElement("button");
+	buttonNewModul.value = "Neues Modul erstellen";
+	buttonNewModul.style.height = "50";
+	buttonNewModul.style.width = "50";
+	source.appendChild(buttonNewModul);
+	buttonNewModul.addEventListener("click", createNewModul);
+	// ändern
+	var buttonchange = document.createElement("button");
+	buttonchange.value = "Modul aendern";
+	buttonchange.style.height = "50";
+	buttonchange.style.width = "50";
+	source.appendChild(buttonchange);
+	buttonchange.addEventListener("click", changeModul);
+	console.log("sollte button erstellt haben");
 	if (window.event) {
 		// IE8 and earlier
 		// doSomething
 	}
 }
+
+function deleteModul() {
+	tmp.value = "Wahlpflichtfach (leer)";
+}
+
+function createNewModul() {
+	tmp.value = "Wahlpflichtfach (leer)";
+}
+
+function changeModul() {
+	tmp.value = "Wahlpflichtfach (leer)";
+}
+
 window.speichern = speichern;
 window.getInformatik = getInformatik;
 window.initAndPushDataSet = initAndPushDataSet;
