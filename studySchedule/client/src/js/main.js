@@ -44,7 +44,8 @@ function initAndPushDataSet() {
 		console.log(body);
 	});
 }
-
+//-------------Get Schedules---------------------//
+//Get all Schedules
 function getAllInformatikSchedules() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik/" };
@@ -54,7 +55,9 @@ function getAllInformatikSchedules() {
 		console.log(body);
 	});
 }
-function getInformatikWinterSemester() {
+
+//Get only Infomatik Winteresemster
+function getInfWinterSemester() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik/Wintersemester" };
 
@@ -63,8 +66,8 @@ function getInformatikWinterSemester() {
 		console.log(body);
 	});
 }
-
-function getInformatikSummerSemester() {
+// Get only SommerSemester
+function getInfSummerSemester() {
 	var request = require("request");
 	var options = { method: "GET", url: "http://localhost:8080/informatik/Sommersemester" };
 
@@ -73,7 +76,25 @@ function getInformatikSummerSemester() {
 		console.log(body);
 	});
 }
+//
+function getInfWinterSemesterModules() {
+	var request = require("request");
+	var options = { method: "GET", url: "http://localhost:8080/informatik/Wintersemester/Modules" };
 
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+function getInfSummerSemesterModules() {
+	var request = require("request");
+	var options = { method: "GET", url: "http://localhost:8080/informatik/Sommersemester/Modules" };
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
 function postWirtschaft() {
 	var request = require("request");
 	let payload = {
@@ -155,7 +176,17 @@ function getModule(event) {
 		// doSomething
 	}
 }
+
+//Property Methods
 window.speichern = speichern;
-window.getInformatik = getInformatik;
+
+//Informatik
+window.getAllInformatikSchedules = getAllInformatikSchedules;
+window.getInfSummerSemester = getInfSummerSemester;
+window.getInfWinterSemester = getInfWinterSemester;
+window.getInfSummerSemesterModules = getInfSummerSemesterModules;
+window.getInfWinterSemesterModules = getInfWinterSemesterModules;
+
 window.initAndPushDataSet = initAndPushDataSet;
 window.postWirtschaft = postWirtschaft;
+
