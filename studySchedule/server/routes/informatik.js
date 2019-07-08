@@ -4,11 +4,29 @@ const mongoose = require("mongoose");
 let informaticRouter = express.Router();
 //informaticRouter.use(require("body-parser").json());
 let StudyScheduleSchema = require("../../client/src/model/studySchedule");
+let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
+let InformaticStudySchedule = StudyScheduleSchema.modelSchema("InformaticStudySchedule", "Informatik");
 
 informaticRouter.get("/informatik", (req, res)=>{
-	res.send("You requested Informatik");
+	mongoose.connect(dbUri, { useNewUrlParser: true })
+		.then((conn)=>{
+			let scheduleQuery = InformaticStudySchedule.find({}).exec().then(schedules=>{
+
+				console.log(schedules);
+				return res.status(201).send(schedules);
+			})
+				.catch(err=>{
+					return res.status(500).send(err);
+				})
+				.finally(()=>{
+					mongoose.disconnect();
+				});
+		})
+		.catch(err=>{
+			return res.status(500).send("Error with the ServerConnection");
+		});
 });
-let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
+
 //Create new Informatik StudySchedule
 informaticRouter.post("/informatik", (req, res) =>{
 	if (!req.body) {
@@ -25,7 +43,6 @@ informaticRouter.post("/informatik", (req, res) =>{
 		}
 		*/
 
-	let InformaticStudySchedule = StudyScheduleSchema.modelSchema("InformaticStudySchedule", "Informatik");
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn) => {
 			let studySchedule = new InformaticStudySchedule(req.body);
