@@ -95,6 +95,38 @@ function getInfSummerSemesterModules() {
 		console.log(body);
 	});
 }
+
+function updateInfSchedule() {
+	console.log("Update Function triggered");
+	var request = require("request");
+	var payload = {
+		name: "UpdateInformatik",
+		semester: 6,
+		ectsPerSem: 30,
+		semesterTiming: "Wintersemester",
+		semesters: [{
+			module: [{
+				name: "Webentwicklung",
+				ects: 5,
+				id: new mongoose.Types.ObjectId()
+			}, {
+				name: "Webtechnologien",
+				ects: 5,
+				id: new mongoose.Types.ObjectId()
+			}]
+		}]
+	};
+	var options = {
+		method: "PUT",
+		url: "http://localhost:8080/informatik/5d23677372a8725a146632a6",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(payload)
+	};
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
 function postWirtschaft() {
 	var request = require("request");
 	let payload = {
@@ -181,11 +213,14 @@ function getModule(event) {
 window.speichern = speichern;
 
 //Informatik
+//Get
 window.getAllInformatikSchedules = getAllInformatikSchedules;
 window.getInfSummerSemester = getInfSummerSemester;
 window.getInfWinterSemester = getInfWinterSemester;
 window.getInfSummerSemesterModules = getInfSummerSemesterModules;
 window.getInfWinterSemesterModules = getInfWinterSemesterModules;
+//Update
+window.updateInfSchedule = updateInfSchedule;
 
 window.initAndPushDataSet = initAndPushDataSet;
 window.postWirtschaft = postWirtschaft;

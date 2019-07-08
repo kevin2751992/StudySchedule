@@ -104,6 +104,34 @@ informaticRouter.get("/informatik/Wintersemester/modules", (req, res)=>{
 		});
 });
 
+informaticRouter.put("/informatik/:id", (req, res) =>{
+	console.log("PutMethod Triggered");
+	if (!req.body) {
+		return res.status(400).send("Body is missing");
+	}
+	mongoose.connect(dbUri, { useNewUrlParser: true })
+		.then((conn)=>{
+			InformaticStudySchedule.findById(req.params.id).exec().then(schedule=>{
+				schedule.set(req.body);
+				schedule.save().then(doc=>{
+					if (!doc || doc.length === 0) {
+						return res.status(500).send(doc);
+					}
+					return res.status(201).send({ inserted: JSON.stringify(doc) });
+				})
+					.catch(err=>{
+						return res.status(500).send({ data: JSON.stringify(err) });
+					})
+					.finally(() => {
+						mongoose.disconnect((msg) => {
+							console.log("All connections closed. ", msg);
+						});
+					});
+			});
+		});
+	return null;
+});
+
 //Create new Informatik StudySchedule
 informaticRouter.post("/informatik", (req, res) =>{
 	if (!req.body) {
