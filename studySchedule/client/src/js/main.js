@@ -10,7 +10,7 @@ function initAndPushDataSet() {
 		semesters: [{
 			module: [{
 				name: "Webentwicklung",
-				ects: 5,
+				ects: minEcts,
 				id: new mongoose.Types.ObjectId()
 			}, {
 				name: "Webtechnologien",
