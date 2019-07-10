@@ -3,17 +3,17 @@ const mongoose = require("mongoose");
 // eslint-disable-next-line new-cap
 let moduleRouter = express.Router();
 //informaticRouter.use(require("body-parser").json());
-let StudyScheduleSchema = require("../../client/src/model/studySchedule");
+let moduleModel = require("../../client/src/model/module");
 let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
-let InformaticStudySchedule = StudyScheduleSchema.modelSchema("InformaticStudySchedule", "Informatik");
+let modules = moduleModel.moduleModelSchema("Module", "Module");
 
 //Get all InformatikSchedules
-informaticRouter.get("/informatik", (req, res)=>{
+moduleRouter.get("/module", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
-			InformaticStudySchedule.find({}).exec().then(schedules=>{
-				console.log(schedules);
-				return res.status(201).send(schedules);
+			modules.find({}).exec().then(allModules=>{
+				console.log(allModules);
+				return res.status(201).send(allModules);
 			})
 				.catch(err=>{
 					return res.status(500).send(err);
@@ -27,12 +27,31 @@ informaticRouter.get("/informatik", (req, res)=>{
 		});
 });
 //Get Infomatik Wintersemester
-informaticRouter.get("/informatik/Wintersemester", (req, res)=>{
+moduleRouter.get("/module/informatik", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Wintersemester" }).exec().then(schedules=>{
-				console.log(schedules);
-				return res.status(201).send(schedules);
+			modules.find({ fachschaft: "Inf" }).exec().then(infModules=>{
+				console.log(infModules);
+				return res.status(201).send(infModules);
+			})
+				.catch(err=>{
+					return res.status(500).send(err);
+				})
+				.finally(()=>{
+					mongoose.disconnect();
+				});
+		})
+		.catch(err=>{
+			return res.status(500).send("Error with the ServerConnection");
+		});
+});
+
+moduleRouter.get("/module/informatik/wahlpflichtfach", (req, res)=>{
+	mongoose.connect(dbUri, { useNewUrlParser: true })
+		.then((conn)=>{
+			modules.find({ fachschaft: "Inf" }, { wahlpflicht: "true" }).exec().then(infElective=>{
+				console.log(infElective);
+				return res.status(201).send(infElective);
 			})
 				.catch(err=>{
 					return res.status(500).send(err);
@@ -46,31 +65,12 @@ informaticRouter.get("/informatik/Wintersemester", (req, res)=>{
 		});
 });
 //Get Informatik Sommersemester
-informaticRouter.get("/informatik/Sommersemester", (req, res)=>{
+moduleRouter.get("/module/wirtschaft", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Sommersemester" }).exec().then(schedules=>{
-				console.log(schedules);
-				return res.status(201).send(schedules);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection");
-		});
-});
-//Get All Modules of Sommersemester
-informaticRouter.get("/informatik/Sommersemester/modules", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Sommersemester" }).exec().then(schedules=>{
-				console.log(schedules.semesters);
-				return res.status(201).send(schedules.semesters);
+			modules.find({ fachschaft: "Wirtschaft" }).exec().then(bwlModules=>{
+				console.log(bwlModules);
+				return res.status(201).send(bwlModules);
 			})
 				.catch(err=>{
 					return res.status(500).send(err);
@@ -84,13 +84,12 @@ informaticRouter.get("/informatik/Sommersemester/modules", (req, res)=>{
 		});
 });
 
-//Get all Modules of Wintersemster
-informaticRouter.get("/informatik/Wintersemester/modules", (req, res)=>{
+moduleRouter.get("/module/wirtschaft/wahlpflicht", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Wintersemester" }).exec().then(schedules=>{
-				console.log(schedules.semesters);
-				return res.status(201).send(schedules.semesters);
+			modules.find({ fachschaft: "Wirtschaft" }, { wahlpflicht: "true" }).exec().then(bwlElective=>{
+				console.log(bwlElective);
+				return res.status(201).send(bwlElective);
 			})
 				.catch(err=>{
 					return res.status(500).send(err);
@@ -104,16 +103,16 @@ informaticRouter.get("/informatik/Wintersemester/modules", (req, res)=>{
 		});
 });
 
-informaticRouter.put("/informatik/:id", (req, res) =>{
-	console.log("PutMethod Triggered");
+moduleRouter.put("/module/:id", (req, res) =>{
+	console.log("update Module trigered");
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
-			InformaticStudySchedule.findById(req.params.id).exec().then(schedule=>{
-				schedule.set(req.body);
-				schedule.save().then(doc=>{
+			modules.findById(req.params.id).exec().then(toUpdateModule=>{
+				toUpdateModule.set(req.body);
+				toUpdateModule.save().then(doc=>{
 					if (!doc || doc.length === 0) {
 						return res.status(500).send(doc);
 					}
@@ -132,14 +131,14 @@ informaticRouter.put("/informatik/:id", (req, res) =>{
 	return null;
 });
 
-informaticRouter.delete("/informatik/:id", (req, res) =>{
+moduleRouter.delete("/module/:id", (req, res) =>{
 	console.log("DeleteMethod was triggered");
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
-			InformaticStudySchedule.findByIdAndRemove(req.params.id).exec().then(result=> {
+			modules.findByIdAndRemove(req.params.id).exec().then(result=> {
 				return res.status(201).send(result);
 			})
 				.catch(err=>{
@@ -155,25 +154,24 @@ informaticRouter.delete("/informatik/:id", (req, res) =>{
 });
 
 //Create new Informatik StudySchedule
-informaticRouter.post("/informatik", (req, res) =>{
+moduleRouter.post("/module", (req, res) =>{
 	if (!req.body) {
-		return res.status(400).send("Body is ");
+		return res.status(400).send("Body is missing ");
 	}
 
 	/* ----Example Schema ----
-		StudySchedule={
-		name: "Informatik",
-		semester: 6,
-		ectsPerSem: 30,
-		semsters : [SemesterOne, Two ...],
-		scheduleId: someID
+		Module={
+		name: "Theoretische Informatik",
+		ects: 30,
+		fachschaft : "Inf"
 		}
 		*/
 
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn) => {
-			let studySchedule = new InformaticStudySchedule(req.body);
-			studySchedule.save()
+			// eslint-disable-next-line new-cap
+			let newModule = new modules(req.body);
+			newModule.save()
 				.then(doc=>{
 					if (!doc || doc.length === 0) {
 						return res.status(500).send(doc);
@@ -191,4 +189,4 @@ informaticRouter.post("/informatik", (req, res) =>{
 		});
 	return null;
 });
-module.exports = informaticRouter;
+module.exports = moduleRouter;

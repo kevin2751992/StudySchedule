@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 function initAndPushDataSet() {
 	console.log("in initAndkdhfkdshf");
 	var request = require("request");
@@ -11,11 +10,9 @@ function initAndPushDataSet() {
 			module: [{
 				name: "Webentwicklung",
 				ects: minEcts,
-				id: new mongoose.Types.ObjectId()
 			}, {
 				name: "Webtechnologien",
 				ects: 5,
-				id: new mongoose.Types.ObjectId()
 			}]
 		}]
 	};
@@ -98,17 +95,15 @@ function updateInfSchedule() {
 			module: [{
 				name: "Webentwicklung",
 				ects: 5,
-				id: new mongoose.Types.ObjectId()
 			}, {
 				name: "Webtechnologien",
 				ects: 5,
-				id: new mongoose.Types.ObjectId()
 			}]
 		}]
 	};
 	var options = {
 		method: "PUT",
-		url: "http://localhost:8080/informatik/5d23677372a8725a146632a6",
+		url: "http://localhost:8080/informatik/5d248b99d3013b0cdcd45f57",
 		headers: { "content-type": "application/json" },
 		body: JSON.stringify(payload)
 	};
@@ -119,16 +114,72 @@ function updateInfSchedule() {
 }
 
 function deleteInfSchedule() {
-	console.log("Update Function triggered");
+	console.log("Delete Function triggered");
 	var request = require("request");
 	var options = {
 		method: "DELETE",
-		url: "http://localhost:8080/informatik/5d23677372a8725a146632a6",
+		url: "http://localhost:8080/informatik/5d248b99d3013b0cdcd45f57",
 		headers: { "content-type": "application/json" },
 	};
 	request(options, function (error, response, body) {
 		if (error) { throw new Error(error); }
 		console.log(body);
+	});
+}
+
+function getAllModules() {
+	var request = require("request");
+	var options = { method: "GET", url: "http://localhost:8080/module/informatik" };
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+function getInfElective() {
+	var request = require("request");
+	var options = { method: "GET", url: "http://localhost:8080/module/informatik/wahlpflichtfach" };
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+
+function updateModule() {
+	var request = require("request");
+	var payload = {
+		name: "updatedModule",
+		ects: 5,
+		fachschaft: "inf"
+	};
+	var options = {
+		method: "PUT", url: "http://localhost:8080/module/5d244b6d1c9d440000dbfabb",
+		body: JSON.stringify(payload)
+	};
+
+	request(options, function (error, response, body) {
+		if (error) { throw new Error(error); }
+		console.log(body);
+	});
+}
+
+function createModule() {
+	var request = require("request");
+	let payload = {
+		name: "newModule",
+		ects: 10,
+		fachschaft: "",
+	};
+	var options = {
+		method: "POST",
+		url: "http://localhost:8080/module",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify(payload)
+	};
+	request(options, (err, res, body) => {
+		console.log("response: ", res);
+		console.log("body: ", body);
 	});
 }
 
@@ -219,11 +270,15 @@ window.speichern = speichern;
 
 //Informatik
 //Get
-window.getAllInformatikSchedules = getAllInformatikSchedules;
+//window.getAllInformatikSchedules = getAllInformatikSchedules;
 window.getInfSummerSemester = getInfSummerSemester;
 window.getInfWinterSemester = getInfWinterSemester;
 window.getInfSummerSemesterModules = getInfSummerSemesterModules;
 window.getInfWinterSemesterModules = getInfWinterSemesterModules;
+
+//Get Modules
+window.getAllModules = getAllModules;
+window.getInfElective = getInfElective;
 //Update
 window.updateInfSchedule = updateInfSchedule;
 //Delete

@@ -1,40 +1,49 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="./styles/style.css"/>
-    <script src="./js/main.js"></script>
+<html>
 
-    <title>Webdev Project</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Unsere tolle Modulverwaltung</title>
+    <meta name="author" content="Kevin und Tim">
+    <link rel="stylesheet" href="./styles/style.css" type="text/css">
+	<!--<script type="text/javascript" src="./js/jquery.js"></script> --><!-- jQuery über NodeJS in mainjs einfüegen -->
+    <script type="text/javascript" src="./js/main.js"></script> <!-- durch mainjs tauschen Webpack generiert. -->
 </head>
 <body>
-	
-    
-	<input id="clickMe" type="button" value="getInformatik" onclick=getAllInformatikSchedules() />>
-	<input id="clickMe" type="button" value="getInfSommer" onclick=getInfSummerSemester() />
-	<input id="clickMe" type="button" value="getInfWinter" onclick=getInfWinterSemester() />
-	<input id="clickMe" type="button" value="getInfSommerModules" onclick=getInfSummerSemesterModules() />
-	<input id="clickMe" type="button" value="getInfWinterModules" onclick=getInfWinterSemesterModules() />
-	<input id="clickMe" type="button" value="updateInfSchedule" onclick=updateInfSchedule() />
-	<input id="clickMe" type="button" value="deleteInfSchedule" onclick=deleteInfSchedule() />
-	<label> 
-	<br> Wie groß soll der minimal erlaubte Umfang aller Module in ECTS-Punkten sein?</label>
-	<input type="text" name=eingabeUmfangEcts id="minEcts" value=""/> <br>
-	<label> 
-	<br> Wie viele ECTS-Punkte möchtest du maximal pro Semester haben?</label>
-	<input type="text" name=ectsPerSem id="ectsPerSem" value=""/> <br>
-	<label> 
-	<br> Wie viele Semester möchtest du studieren?</label>
-	<input type="text" name=numberOfSemester id="numberOfSem" value=""/> <br>
-	<input id="save" type="button" value="Speichern" onclick=speichern() />
-	<br>
-	<br>
-	<br>
-	<br>
-	<input id="initalize" type="button" value="initalize" onclick=initAndPushDataSet() />
-	<div id="tableId" class="divTable" style="width: 100%" > </div
 
+    <header>
+        <div id="leftHead">
+                <a href="#" onclick=""> <i class="icon-menu spaceR"></i> </a>
+                <h2 class="spaceWR"> Modulo </h2>
+                <h2 id="breadcrumbs"> Placeholder </h2>
+        </div>
 
+        <div id="rightHead">
+                <a href="#" onclick="newSchedule();"> <i class="icon-plus"> </i> <p class="spaceL spaceWR"> Neuer Ablaufplan </p> </a> 
+                <a href="#" onclick="openOptions();"> <i class="icon-cog"></i> </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="cardlist"> 
+            <div class="cards">
+                    <div class="card"><img src="" width="200" height="100" /> </div>
+                    <div class="card"><img src="" width="200" height="100" /> </div>
+                    <div class="card"><img src="" width="200" height="100" /> </div>
+            </div>
+            <div class="pagination"> </div>
+        </div>
+        
+
+    </main>
+
+    <div id="modal" class="modal">
+            <div class="modal-container">
+                    <span id="modalClose">&times;</span>
+                    <div id="modalContent" ></div>
+            </div>
+    </div>
 </body>
 
+</html>

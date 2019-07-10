@@ -1,0 +1,26 @@
+
+.spaceWL {
+    margin-left: 30px;   
+}
+
+.spaceWR {
+    margin-right: 30px;   
+}
+
+.spaceWLR {
+    @extend .spaceWR;
+    @extend .spaceWL;
+}
+
+.spaceL {
+    margin-left: 10px;   
+}
+
+.spaceR {
+    margin-right: 10px;   
+}
+
+.spaceLR {
+    @extend .spaceR;
+    @extend .spaceL;
+}

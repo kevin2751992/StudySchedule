@@ -1,10 +1,13 @@
 let mongoose = require("mongoose");
 
-let Module = new mongoose.Schema({
+let Modules = new mongoose.Schema({
 
 	name: String,
 	ects: Number,
-	fachschaft: String
+
 });
 
-module.exports = Module;
+module.exports = Modules;
+module.exports.moduleModelSchema = function (name, collection) {
+	return mongoose.model(name, Modules, collection);
+};
