@@ -1,0 +1,16 @@
+.newScheduleViewContainer {
+	flex-direction: row;
+	width: 100%;
+	height: 683px;
+	.tileOverviewContainer {
+		width: 70%;
+		height: 100%;
+		background-color: red;
+	}
+	.moduleOverviewContainer {
+		width: 30%;
+		height: 100%;
+		background-color: orange;
+		overflow: scroll;
+	}
+}

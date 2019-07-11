@@ -2,7 +2,7 @@ let mongoose = require("mongoose");
 
 let OptionModel = new mongoose.Schema({
 
-	minects: Number,
+	minEcts: Number,
 	ectsPerSem: Number,
 	numberOfSem: Number
 

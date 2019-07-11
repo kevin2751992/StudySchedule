@@ -10,26 +10,29 @@ let modules = moduleModel.moduleModelSchema("Module", "Module");
 //Get all InformatikSchedules
 moduleRouter.get("/module", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
-			modules.find({}).exec().then(allModules=>{
-				console.log(allModules);
-				return res.status(201).send(allModules);
+		.then(()=>{
+			modules.find().exec().then(moduleResult=>{
+				console.log(moduleResult);
+				return res.status(201).send(moduleResult);
 			})
 				.catch(err=>{
+					console.log("Catch Error after query failed");
 					return res.status(500).send(err);
 				})
-				.finally(()=>{
-					mongoose.disconnect();
+				.finally(()=> {
+					mongoose.disconnect(msg=>{
+						console.log("Closed Connection to DB ");
+					});
 				});
 		})
 		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection");
+			return res.status(500).send("Error with the ServerConnection", err);
 		});
 });
 //Get Infomatik Wintersemester
 moduleRouter.get("/module/informatik", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
+		.then(()=>{
 			modules.find({ fachschaft: "Inf" }).exec().then(infModules=>{
 				console.log(infModules);
 				return res.status(201).send(infModules);
@@ -48,7 +51,7 @@ moduleRouter.get("/module/informatik", (req, res)=>{
 
 moduleRouter.get("/module/informatik/wahlpflichtfach", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
+		.then(()=>{
 			modules.find({ fachschaft: "Inf" }, { wahlpflicht: "true" }).exec().then(infElective=>{
 				console.log(infElective);
 				return res.status(201).send(infElective);
@@ -67,7 +70,7 @@ moduleRouter.get("/module/informatik/wahlpflichtfach", (req, res)=>{
 //Get Informatik Sommersemester
 moduleRouter.get("/module/wirtschaft", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
+		.then(()=>{
 			modules.find({ fachschaft: "Wirtschaft" }).exec().then(bwlModules=>{
 				console.log(bwlModules);
 				return res.status(201).send(bwlModules);
@@ -86,7 +89,7 @@ moduleRouter.get("/module/wirtschaft", (req, res)=>{
 
 moduleRouter.get("/module/wirtschaft/wahlpflicht", (req, res)=>{
 	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
+		.then(()=>{
 			modules.find({ fachschaft: "Wirtschaft" }, { wahlpflicht: "true" }).exec().then(bwlElective=>{
 				console.log(bwlElective);
 				return res.status(201).send(bwlElective);
