@@ -1,0 +1,46 @@
+
+.cardlist {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        grid-template-rows: 1fr 50px;
+        grid-template-columns: 1fr;
+        grid-template-areas: "cards pagination";
+        justify-items: center;
+        align-items: center;
+    
+        .cards {
+            width: 95%;
+            height: 90%;
+            grid-area: cards;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: 1fr;
+            grid-gap: 2em;
+
+            .card {
+                background-color: #FFF;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                border-radius: 0.3em;
+
+                img {
+                    height: 100%;
+                }
+
+                .cardfunctions {
+
+                }
+            }
+        }
+
+        .pagination {
+            grid-area: pagination;
+            widht: 100%;
+            height: 100%;
+        }
+    
+    
+    
+    }

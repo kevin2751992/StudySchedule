@@ -1,17 +1,5 @@
 let mongoose = require("mongoose");
-
-let Module = new mongoose.Schema({
-
-	name: String,
-	ects: Number,
-	id: mongoose.SchemaTypes.ObjectId,
-});
-
-let Semester = new mongoose.Schema({
-
-	module: [Module]
-
-});
+let semesterModel = require("./semester");
 
 let StudyscheduleSchema = new mongoose.Schema({
 
@@ -19,7 +7,8 @@ let StudyscheduleSchema = new mongoose.Schema({
 	semester: Number,
 	ectsPerSem: Number,
 	minEctsPerSem: Number,
-	semesters: [Semester],
+	semesterTiming: String,
+	semesters: [semesterModel],
 	scheduleId: mongoose.SchemaTypes.ObjectId
 
 });
