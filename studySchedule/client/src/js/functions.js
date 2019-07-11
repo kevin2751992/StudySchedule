@@ -5,7 +5,7 @@ let $ = require("jquery");
 
 let view = new View();
 let modal = new Modal();
-var scheduleOverview = new ScheduleOverview();
+var scheduleOverview = new ScheduleOverview(view, modal);
 
 function newSchedule() {
 	scheduleOverview.render();

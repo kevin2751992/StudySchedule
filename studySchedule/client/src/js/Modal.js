@@ -52,8 +52,12 @@ class Modal {
 	}
 
 	checkOptions() {
+		let minEcts = $("#minEcts").val();
+		let numberOfSem = $("#numberOfSem").val();
+		let ectsPerSem = $("#ectsPerSem").val();
+
 		console.log("minEcts;", $("#minEcts").val());
-		if ($("#minEcts").val() > 0 && $("#numberOfSem").val() > 0 && $("#ectsPerSem").val() > 0) {
+		if (minEcts > 0 && numberOfSem > 0 && ectsPerSem > 0 && (ectsPerSem % minEcts === 0)) {
 			return true;
 		}
 		alert("Bitte überprüfe deine Eingabe. Eingaben müssen Werte größer Null sein");

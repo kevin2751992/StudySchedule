@@ -1,10 +1,22 @@
 const jQuery = require("jquery");
-const request = require("request");
+const request = require("request-promise");
 const baseUri = "http://localhost:8080";
+
+let StudySchedule = require("./StudySchedule");
+
 class ScheduleOverview {
+	constructor(view, modal) {
+		this.modal = modal;
+		this.view = view;
+		this.fetchOptions().then(options=>{
+			this.StudySchedule = new StudySchedule(options);
+		}).catch(err=>{
+			console.error(err);
+		});
+	}
 	render() {
-		//this.fetchOptions();
 		this.fetchModules();
+
 		jQuery("#newScheduleView").css("display", "flex");
 	}
 	fetchModules() {
@@ -44,11 +56,15 @@ class ScheduleOverview {
 		});
 	}
 	fetchOptions() {
-		var options = { method: "GET", url: `${baseUri}/option` };
+		return new Promise((res, rej)=> {
+			var options = { method: "GET", url: `${baseUri}/option` };
 
-		request(options, function (error, response, body) {
-			if (error) { throw new Error(error); }
-			console.log(body);
+			request(options).then(function (body) {
+				console.log(body);
+				res(JSON.parse(body));
+			}).catch(function (err) {
+				rej(err);
+			});
 		});
 	}
 }

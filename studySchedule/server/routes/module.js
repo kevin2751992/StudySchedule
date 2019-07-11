@@ -9,7 +9,15 @@ let modules = moduleModel.moduleModelSchema("Module", "Module");
 
 //Get all InformatikSchedules
 moduleRouter.get("/module", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	let connection;
+	//If State === 2 Then we have already a connection and we can use the current connection
+	if (mongoose.connection.readyState === 2) {
+		connection = mongoose.connection;
+	}
+	else {
+		connection = mongoose.connect(dbUri, { useNewUrlParser: true });
+	}
+	connection
 		.then(()=>{
 			modules.find().exec().then(moduleResult=>{
 				console.log(moduleResult);
