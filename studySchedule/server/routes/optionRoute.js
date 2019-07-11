@@ -4,26 +4,33 @@ const mongoose = require("mongoose");
 let optionRouter = express.Router();
 let OptionModelSchema = require("../../client/src/model/optionModel");
 let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
-let Options = OptionModelSchema.modelSchema("Options", "Options");
+let Options = OptionModelSchema.optionModelSchema("Options", "Options");
 
-optionRouter.route("/option/")
+optionRouter.route("/option")
 	//Get Winter and Summer Informatik Schedule
 	.get((req, res)=>{
+		/*let state = mongoose.connection.readyState;
+		let actualConnection;
+		if (state === 2) {
+			actualConnection = mongoose.connection;
+		}*/
 		mongoose.connect(dbUri, { useNewUrlParser: true })
-			.then((conn)=>{
-				Options.findOne({}).exec().then(resultOptions=>{
+			.then(()=>{
+				Options.find({}).exec().then(resultOptions=>{
 					console.log(resultOptions);
 					return res.status(201).send(resultOptions);
 				})
 					.catch(err=>{
-						return res.status(404).send("Query with no result (unresolved Promise). No Options found!", err);
+						return res.status(500).send(err);
 					})
-					.finally(()=>{
-						mongoose.disconnect();
+					.finally(()=> {
+						mongoose.disconnect(msg=>{
+							console.log("Closed Connection to DB ");
+						});
 					});
 			})
 			.catch(err=>{
-				return res.status(500).send("Error with the ServerConnection");
+				return res.status(500).send("Error with the ServerConnection", err);
 			});
 	})
 
@@ -73,4 +80,4 @@ optionRouter.route("/option/")
 			});
 		return null;
 	});
-
+module.exports = optionRouter;

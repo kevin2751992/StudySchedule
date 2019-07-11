@@ -10,9 +10,9 @@
     "debug": "npm run lint && npm run debug:js && npm run debug:css",
     "lint": "eslint ./studySchedule/client/src/js/**",
     "css": "node-sass ./studySchedule/client/src/styles/main.scss --output-style expanded ./studySchedule/client/prod/styles/style.css ",
-    "debug:js": "browserify ./studySchedule/client/src/js/main.js -o ./studySchedule/client/prod/js/main.js",
+    "debug:js": "browserify ./studySchedule/client/src/js/main.js -o | babel --presets minify ./studySchedule/client/prod/js/main.js",
     "build": "mkdirp ./studySchedule/prod && npm run lint && npm run js:min && npm run css && cp -r ./studySchedule/assets/fonts ./studySchedule/client/prod && cp ./studySchedule/client/src/index.html ./studySchedule/client/prod/index.html  ",
-    "js:min": " browserify ./studySchedule/client/src/js/functions.js | babel --presets minify -o ./studySchedule/client/prod/js/main.js ",
+    "js:min": " browserify ./studySchedule/client/src/js/functions.js -o ./studySchedule/client/prod/js/main.js ",
     "clean": "npm run clean:dist && rm -rf node_modules",
     "clean:dist": "rm –rf prod",
     "debug:css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css ",
@@ -28,8 +28,10 @@
     "mongod": "^2.0.0",
     "mongodb": "^3.0.1",
     "mongoose": "^5.6.1"
+    
   },
   "devDependencies": {
+	"request-promise": "^4.2.4",
     "jquery": "^3.4.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

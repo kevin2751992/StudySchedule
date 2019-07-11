@@ -9,6 +9,7 @@ const parser = require("body-parser");
 const informatikRoutes = require("./routes/informatik");
 const wirtschaftRoutes = require("./routes/wirtschaft");
 const moduleRoutes = require("./routes/module");
+const optionRoutes = require("./routes/optionRoute");
 
 // create server
 let server = express();
@@ -29,4 +30,5 @@ client.connect((error, db) =>{
 	server.use(informatikRoutes);
 	server.use(wirtschaftRoutes);
 	server.use(moduleRoutes);
+	server.use(optionRoutes);
 });
