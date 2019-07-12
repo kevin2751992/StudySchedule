@@ -17,7 +17,8 @@ function openOptions() {
 	modal.showModal();
 }
 
-function openChangeModuleView() {
+function openChangeModuleView(id) {
+	changeModuleView.setSourceId(id);
 	changeModuleView.render();
 }
 

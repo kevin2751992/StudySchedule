@@ -42,7 +42,8 @@ class ScheduleOverview {
 					let editBtn = document.createElement("button");
 					editBtn.append("Edit Module");
 					editBtn.onclick = function renderEdit() {
-						window.openChangeModuleView();
+						console.log(editBtn.parentNode.parentNode.dataset.moduleid);
+						window.openChangeModuleView(editBtn.parentNode.parentNode.dataset.moduleid);
 					};
 					let addBtn = document.createElement("button");
 					addBtn.append("Add Module");
