@@ -123,6 +123,7 @@ moduleRouter.put("/module/:id", (req, res) =>{
 		.then((conn)=>{
 			modules.findById(req.params.id).exec().then(toUpdateModule=>{
 				toUpdateModule.set(req.body);
+				console.log(req.body);
 				toUpdateModule.save().then(doc=>{
 					if (!doc || doc.length === 0) {
 						return res.status(500).send(doc);

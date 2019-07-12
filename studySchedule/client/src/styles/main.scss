@@ -8,8 +8,18 @@
 @import "../../../assets/css/icons";
 @import "../../../assets/css/animations";
 @import "../../../assets/css/modal";
+@import "../../../assets/css/editView";
 @import "../../../assets/css/newScheduleOverview";
 
+.cellContainer{
+	background-color : white;
+	height: 20px;
+}
+.cellContent{
+	color: black ;
+	height: 10px;
+	width: 20px;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
