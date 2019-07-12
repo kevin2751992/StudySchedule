@@ -89449,6 +89449,56 @@ function extend() {
 },{}],374:[function(require,module,exports){
 var $ = require("jquery");
 
+class ChangeModuleView {
+	constructor() {
+		// Option Properties
+		this.changedName = "";
+
+		$(document).ready(() => {
+			this.editView = $("#editView");
+			this.closeButton = $("#changeModulClose");
+			this.closeButton.click(()=>{ this.closeView(); });
+			this.saveButton = $("#saveButton");
+			this.saveButton.click(()=>{ this.save(); });
+			this.modalContent = $("#modalContent");
+		});
+	}
+
+	closeView() {
+		this.editView.hide();
+	}
+
+	render() {
+		this.editView.show();
+	}
+
+	save() {
+		if (this.checkOptions()) {
+			this.changedName = $("#changedNameInput").val();
+			var request = require("request");
+			var payload = {
+				name: this.changedName,
+			};
+			var options = {
+				method: "PUT",
+				url: "http://localhost:8080/module/",
+				headers: { "content-type": "application/json" },
+				body: JSON.stringify(payload)
+			};
+			request(options, function (error, response, body) {
+				console.log(error);
+				console.log(response);
+				console.log(body);
+			});
+		}
+	}
+}
+module.exports = ChangeModuleView;
+window.render = this.render;
+
+},{"jquery":206,"request":290}],375:[function(require,module,exports){
+var $ = require("jquery");
+
 class Modal {
 	constructor() {
 		// Option Properties
@@ -89521,15 +89571,17 @@ class Modal {
 module.exports = Modal;
 
 
-},{"jquery":206,"request":290}],375:[function(require,module,exports){
+},{"jquery":206,"request":290}],376:[function(require,module,exports){
 const jQuery = require("jquery");
 const request = require("request-promise");
 const baseUri = "http://localhost:8080";
+const functions = require("./functions");
 
 let StudySchedule = require("./StudySchedule");
 
 class ScheduleOverview {
-	constructor(view, modal) {
+	constructor(view, modal, changeModuleView) {
+		this.changeModuleView = changeModuleView;
 		this.modal = modal;
 		this.view = view;
 		this.fetchOptions().then(options=>{
@@ -89544,38 +89596,44 @@ class ScheduleOverview {
 		jQuery("#newScheduleView").css("display", "flex");
 	}
 	fetchModules() {
-		var options = { method: "GET", url: `${baseUri}/module` };
+		return new Promise((resolve, rej)=> {
+			var options = { method: "GET", url: `${baseUri}/module` };
 
-		request(options, function (error, response, body) {
-			if (error) { throw new Error(error); }
-			JSON.parse(body).forEach((module) => {
-				// outer div
-				let moduleContainer = document.createElement("div");
-				// module name
-				let moduleNameDiv = document.createElement("div");
-				moduleNameDiv.append(module.name);
-				// ects for module
-				let ectsForModuleDiv = document.createElement("div");
-				ectsForModuleDiv.append(module.ects);
-				// buttons to delete/edit module
-				let buttonsDiv = document.createElement("div");
-				let deleteBtn = document.createElement("button");
-				deleteBtn.append("Delete Module");
-				let editBtn = document.createElement("button");
-				editBtn.append("Edit Module");
-				let addBtn = document.createElement("button");
-				addBtn.append("Add Module");
-				// append to containers
-				buttonsDiv.append(editBtn);
-				buttonsDiv.append(deleteBtn);
-				buttonsDiv.append(addBtn);
-				moduleContainer.append(moduleNameDiv);
-				moduleContainer.append(ectsForModuleDiv);
-				moduleContainer.append(buttonsDiv);
-				// save module id in data attribute for later access
-				moduleContainer.setAttribute("data-moduleId", module._id);
-				// append to overview container
-				jQuery("#moduleOverview").append(moduleContainer);
+			request(options).then(function (body) {
+				resolve(JSON.parse(body).forEach((module) => {
+					// outer div
+					let moduleContainer = document.createElement("div");
+					// module name
+					let moduleNameDiv = document.createElement("div");
+					moduleNameDiv.append(module.name);
+					// ects for module
+					let ectsForModuleDiv = document.createElement("div");
+					ectsForModuleDiv.append(module.ects);
+					// buttons to delete/edit module
+					let buttonsDiv = document.createElement("div");
+					let deleteBtn = document.createElement("button");
+					deleteBtn.append("Delete Module");
+					let editBtn = document.createElement("button");
+					editBtn.append("Edit Module");
+					editBtn.onclick = function renderEdit() {
+						window.openChangeModuleView();
+					};
+					let addBtn = document.createElement("button");
+					addBtn.append("Add Module");
+					// append to containers
+					buttonsDiv.append(editBtn);
+					buttonsDiv.append(deleteBtn);
+					buttonsDiv.append(addBtn);
+					moduleContainer.append(moduleNameDiv);
+					moduleContainer.append(ectsForModuleDiv);
+					moduleContainer.append(buttonsDiv);
+					// save module id in data attribute for later access
+					moduleContainer.setAttribute("data-moduleId", module._id);
+					// append to overview container
+					jQuery("#moduleOverview").append(moduleContainer);
+				}));
+			}).catch(function (err) {
+				rej(err);
 			});
 		});
 	}
@@ -89593,9 +89651,11 @@ class ScheduleOverview {
 	}
 }
 module.exports = ScheduleOverview;
+window.renderEdit = this.renderEdit;
 
-},{"./StudySchedule":376,"jquery":206,"request-promise":289}],376:[function(require,module,exports){
-let jQuery = require("jquery");
+
+},{"./StudySchedule":377,"./functions":379,"jquery":206,"request-promise":289}],377:[function(require,module,exports){
+let $ = require("jquery");
 let modul = {
 	name: String,
 	ects: Number,
@@ -89631,14 +89691,33 @@ class StudySchedule {
 		let numberOfSem = options[0].numberOfSem;
 		console.log(minEcts, ectsPerSem, numberOfSem);
 		//get TableContainer
-		let scheduleTileTable = jQuery("#tileOverview");
+		let scheduleTileTable = $("#tileOverview");
 		let rows = numberOfSem;
 		let columns = ectsPerSem / minEcts;
+		//One Loop for Each Row
+		for (let i = 0; i < rows; i++) {
+			//Loop for each ColumnCell in Row
+			for (let j = 0; j < columns; j++) {
+				//Create Cell Container and Cellcontent Div
+				console.log("Created Div");
+				let cellContainer = document.createElement("div");
+				cellContainer.id = "row" + i + "cell" + j;
+				cellContainer.setAttribute("data-posx", i);
+				cellContainer.setAttribute("data-posy", j);
+				cellContainer.classList.add("cellContainer");
+				let cellContent = document.createElement("div");
+				cellContent.classList.add("cellContent");
+				//Set Data Attribute to locate which row and cellNumber
+				cellContent.innerHTML = "Wahlpflichtfach";
+				cellContainer.appendChild(cellContent);
+				scheduleTileTable.append(cellContainer);
+			}
+		}
 	}
 }
 module.exports = StudySchedule;
 
-},{"jquery":206}],377:[function(require,module,exports){
+},{"jquery":206}],378:[function(require,module,exports){
 var $ = require("jquery");
 class View {
 	constructor() {
@@ -89658,15 +89737,17 @@ class View {
 }
 module.exports = View;
 
-},{"jquery":206}],378:[function(require,module,exports){
+},{"jquery":206}],379:[function(require,module,exports){
 let View = require("./View");
 let Modal = require("./Modal");
+let ChangeModuleView = require("./ChangeModuleView");
 let ScheduleOverview = require("./ScheduleOverview");
 let $ = require("jquery");
 
 let view = new View();
 let modal = new Modal();
-var scheduleOverview = new ScheduleOverview(view, modal);
+let changeModuleView = new ChangeModuleView();
+var scheduleOverview = new ScheduleOverview(view, modal, changeModuleView);
 
 function newSchedule() {
 	scheduleOverview.render();
@@ -89676,7 +89757,12 @@ function openOptions() {
 	modal.showModal();
 }
 
+function openChangeModuleView() {
+	changeModuleView.render();
+}
+
+window.openChangeModuleView = openChangeModuleView;
 window.openOptions = openOptions;
 window.newSchedule = newSchedule;
 
-},{"./Modal":374,"./ScheduleOverview":375,"./View":377,"jquery":206}]},{},[378]);
+},{"./ChangeModuleView":374,"./Modal":375,"./ScheduleOverview":376,"./View":378,"jquery":206}]},{},[379]);
