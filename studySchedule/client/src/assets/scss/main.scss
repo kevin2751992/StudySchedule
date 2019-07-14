@@ -1,27 +1,16 @@
 
-@import "../../../assets/css/colors";
-@import "../../../assets/css/fonts";
-@import "../../../assets/css/links";
-@import "../../../assets/css/spacings";
-@import "../../../assets/css/mainOverview";
-@import "../../../assets/css/colors";
-@import "../../../assets/css/icons";
-@import "../../../assets/css/animations";
-@import "../../../assets/css/modal";
-@import "../../../assets/css/editView";
-@import "../../../assets/css/newScheduleOverview";
-
-.cellContainer{
-	background-color : white;
-	height: 20px;
-}
-.cellContent{
-	color: black ;
-	height: 10px;
-	width: 20px;
-}
+@import "./colors";
+@import "./fonts";
+@import "./links";
+@import "./buttons";
+@import "./spacings";
+@import "./icons";
+@import "./animations";
+@import "./modal";
+@import "./listView";
 
 body {
+    background: $primary-color-light;
     font-family: 'Roboto', sans-serif;
     color: $primary-text-color;
     margin: 0;
@@ -57,6 +46,7 @@ body {
     }
 
     main {
+        display: grid;
         background: $primary-color-light;
         width: 100%;
         height: 100%;

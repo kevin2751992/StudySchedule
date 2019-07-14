@@ -6,40 +6,44 @@
   "scripts": {
     "start": "node ./studySchedule/server/server.js ",
     "startDB": " mongod --dbpath db/mongodbdata",
-    "predebug": "npm install",
-    "debug": "npm run lint && npm run debug:js && npm run debug:css",
-    "lint": "eslint ./studySchedule/client/src/js/**",
-    "css": "node-sass ./studySchedule/client/src/styles/main.scss --output-style expanded ./studySchedule/client/prod/styles/style.css ",
-    "debug:js": "browserify ./studySchedule/client/src/js/main.js -o | babel --presets minify ./studySchedule/client/prod/js/main.js",
-    "build": "mkdirp ./studySchedule/prod && npm run lint && npm run js:min && npm run css && cp -r ./studySchedule/assets/fonts ./studySchedule/client/prod && cp ./studySchedule/client/src/index.html ./studySchedule/client/prod/index.html  ",
-    "js:min": " browserify ./studySchedule/client/src/js/functions.js -o ./studySchedule/client/prod/js/main.js ",
-    "clean": "npm run clean:dist && rm -rf node_modules",
-    "clean:dist": "rm –rf prod",
-    "debug:css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css ",
-    "start-watch": "nodemon ./studySchedule/server/server.jns"
+    "build": "mkdirp ./studySchedule/dist && npm run lint && npm run js:min && npm run css:min && npm run static:min",
+    "static": "cp -r ./studySchedule/client/src/assets/fonts ./studySchedule/dist/ && cp ./studySchedule/client/src/index.html ./studySchedule/dist/index.html ",
+    "static:min": "npm run static && place ./studySchedule/dist/index.html style.css style.min.css && place ./studySchedule/dist/index.html main.js main.min.js",
+    "lint": "eslint -c .eslintrc.json ./studySchedule/client/src/js/**",
+    "css": "node-sass ./studySchedule/client/src/assets/scss/main.scss --output-style expanded ./studySchedule/dist/style.css",
+    "css:min": "node-sass ./studySchedule/client/src/assets/scss/main.scss --output-style compressed ./studySchedule/dist/style.min.css",
+    "js": "browserify ./studySchedule/client/src/js/main.js -o ./studySchedule/dist/main.js",
+    "js:min": "npm run js && minify ./studySchedule/dist/main.js --out-file ./studySchedule/dist/main.min.js && rimraf ./studySchedule/dist/main.js",
+    "clean": "npm run clean:dist && rimraf node_modules",
+    "clean:dist": "rimraf studySchedule/dist/",
+    "rundev": "npm run build && npm run start",
+    "dev": "nodemon --exec npm run rundev -e js,scss,html"
+  }, 
+  "nodemonConfig": {
+    "ignore": [
+      "studySchedule/dist/*"
+    ],
+    "delay": "1500"
   },
-  "author": "",
+  "author": "Kevin und Tim",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "browserify": "^16.2.3",
     "express": "^4.17.0",
-    "mkdirp": "^0.5.1",
     "mongod": "^2.0.0",
     "mongodb": "^3.0.1",
     "mongoose": "^5.6.1"
-    
   },
   "devDependencies": {
-	"request-promise": "^4.2.4",
-    "jquery": "^3.4.1",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-minify": "^0.5.0",
-    "babelify": "^10.0.0",
+    "babel-minify": "^0.5.0",
     "eslint": "^5.16.0",
-    "less": "^3.9.0",
+    "jquery": "^3.4.1",
+    "mkdirp": "^0.5.1",
+    "node-sass": "^4.12.0",
     "nodemon": "^1.19.1",
-    "node-sass": "^4.12.0"
+    "place": "^1.2.1",
+    "request-promise": "^4.2.4",
+    "rimraf": "^2.6.3"
   }
 }

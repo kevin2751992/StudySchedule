@@ -1,19 +1,71 @@
-var $ = require("jquery");
+const $ = require("jquery");
+const View = require("./View");
+const HTMLTEMPLATES = require("./HTMLTemplates");
+const APIHANDLER = require("./APIHandler");
 
-class Modal {
+module.exports = class Modal extends View {
 	constructor() {
-		// Option Properties
-		this.minEcts = 0;
-		this.numberOfSem = 0;
-		this.ectsPerSem = 0;
+		super($(".modalContent"));
+		this.modal = $("#modal");
+		this.closeButton = $("#modalClose");
+		this.modalSafe = $("#modalSafe");
+		this.modalContainer = $("#modalContainer");
+		this.closeButton.click(() => { this.closeModal(); });
+	}
 
-		$(document).ready(() => {
-			this.modal = $("#modal");
-			this.closeButton = $("#modalClose");
-			this.closeButton.click(()=>{ this.closeModal(); });
-			this.saveButton = $("#saveButton");
-			this.saveButton.click(()=>{ this.save(); });
-			this.modalContent = $("#modalContent");
+	renderOptions() {
+		APIHANDLER.getOptions().then((response) => {
+			let initF = function (modal) {
+				let op1 = $("#op1");
+				let op2 = $("#op2");
+				let op3 = $("#op3");
+
+				op1.val(response["0"].numberOfSem);
+				op2.val(response["0"].minEcts);
+				op3.val(response["0"].ectsPerSem);
+
+				op2.change(() => {
+					op3.val(op2.val());
+				});
+
+				op3.attr("step", op2.val());
+				op2.change(() => {
+					op3.attr("step", op2.val());
+				});
+
+				modal.modalSafe.click(() => {
+					if (op1.val() <= 0 || op2.val() <= 0 || op3.val() <= 0) {
+						if (op1.val() <= 0) { op1.get(0).setCustomValidity("Anzahl Semester muss größer 0 sein."); }
+						if (op2.val() <= 0) { op1.get(0).setCustomValidity("Minimale Anzahl ECTS muss größer 0 sein."); }
+						if (op3.val() <= 0) { op1.get(0).setCustomValidity("Minimale ECTS pro Semester muss größer 0 sein."); }
+						op1.get(0).reportValidity();
+						op2.get(0).reportValidity();
+						op3.get(0).reportValidity();
+					}
+					else if (op3.val() % op2.val() !== 0) {
+						op3.get(0).reportValidity();
+					}
+					else {
+						op1.get(0).setCustomValidity("");
+						op2.get(0).setCustomValidity("");
+						op3.get(0).setCustomValidity("");
+						APIHANDLER.setOptions({
+							numberOfSem: op1.val(),
+							minEcts: op2.val(),
+							ectsPerSem: op3.val()
+						}).then((info) => {
+							console.info(info);
+							modal.closeModal();
+							//TODO Speichern Datenbank implementieren
+						}).catch(err => console.error(err));
+					}
+				});
+			};
+
+			super.setHTMLTemplate(HTMLTEMPLATES.MODALOPTIONS);
+			super.setRenderFunction(initF);
+			this.showModal();
+			super.render(this);
 		});
 	}
 
@@ -24,50 +76,4 @@ class Modal {
 	showModal() {
 		this.modal.show();
 	}
-
-	save() {
-		if (this.checkOptions()) {
-			this.minEcts = $("#minEcts").val();
-			this.numberOfSem = $("#numberOfSem").val();
-			this.ectsPerSem = $("#ectsPerSem").val();
-			var request = require("request");
-			var payload = {
-				minEcts: this.minEcts,
-				numberOfSem: this.numberOfSem,
-				ectsPerSem: this.ectsPerSem
-			};
-			var options = {
-				method: "POST",
-				url: "http://localhost:8080/option/",
-				headers: { "content-type": "application/json" },
-				body: JSON.stringify(payload)
-			};
-			request(options, function (error, response, body) {
-				console.log(error);
-				console.log(response);
-				console.log(body);
-			});
-			this.getCurentOptions();
-		}
-	}
-
-	checkOptions() {
-		let minEcts = $("#minEcts").val();
-		let numberOfSem = $("#numberOfSem").val();
-		let ectsPerSem = $("#ectsPerSem").val();
-
-		console.log("minEcts;", $("#minEcts").val());
-		if (minEcts > 0 && numberOfSem > 0 && ectsPerSem > 0 && (ectsPerSem % minEcts === 0)) {
-			return true;
-		}
-		alert("Bitte überprüfe deine Eingabe. Eingaben müssen Werte größer Null sein");
-		return false;
-	}
-
-	getCurentOptions() {
-		console.log("Current StudySchedule Options:", "\n", "MinEcts: ", this.minEcts, "\n", "Ects per Semester: ", this.ectsPerSem, "\n", "Number of Semsters: ", this.numberOfSem);
-		return [{ minEcts: this.minEcts }, { numberOfSem: this.numberOfSem }, { ectsPerSem: this.ectsPerSem }];
-	}
-}
-module.exports = Modal;
-
+};

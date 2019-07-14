@@ -1,0 +1,6 @@
+{
+    "HOST": "localhost",
+    "PORT": 8080,
+    "PROTOKOLL": "http",
+    "DBURI": "mongodb+srv://userOne:open@studyscheduledb-s6ye8.mongodb.net/test?retryWrites=true&w=majority"
+}
