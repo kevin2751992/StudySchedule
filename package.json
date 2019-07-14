@@ -18,7 +18,7 @@
     "clean:dist": "rimraf studySchedule/dist/",
     "rundev": "npm run build && npm run start",
     "dev": "nodemon --exec npm run rundev -e js,scss,html"
-  }, 
+  },
   "nodemonConfig": {
     "ignore": [
       "studySchedule/dist/*"

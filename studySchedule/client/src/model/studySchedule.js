@@ -1,5 +1,6 @@
 let mongoose = require("mongoose");
 let semesterModel = require("./semester");
+let optionsModel = require("./optionModel");
 
 let StudyscheduleSchema = new mongoose.Schema({
 
@@ -8,6 +9,7 @@ let StudyscheduleSchema = new mongoose.Schema({
 	ectsPerSem: Number,
 	minEctsPerSem: Number,
 	semesterTiming: String,
+	options: optionsModel,
 	semesters: [semesterModel],
 	scheduleId: mongoose.SchemaTypes.ObjectId
 

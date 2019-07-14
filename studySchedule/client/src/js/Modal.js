@@ -19,11 +19,12 @@ module.exports = class Modal extends View {
 				let op1 = $("#op1");
 				let op2 = $("#op2");
 				let op3 = $("#op3");
-
-				op1.val(response["0"].numberOfSem);
-				op2.val(response["0"].minEcts);
-				op3.val(response["0"].ectsPerSem);
-
+				console.log("Options", response);
+				if (Array.isArray(response) && response.lenght > 0 && response[0].numberOfSem !== undefined) {
+					op1.val(response[0].numberOfSem);
+					op2.val(response[0].minEcts);
+					op3.val(response[0].ectsPerSem);
+				}
 				op2.change(() => {
 					op3.val(op2.val());
 				});

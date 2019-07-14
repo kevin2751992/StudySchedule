@@ -3,6 +3,7 @@ const CONFIG = require("../../../config.json");
 const PATHS = {
 	OPTIONS: "option/",
 	MODULES: "module/",
+	STATUS: "status"
 };
 
 const HTTPMETHODS = {
@@ -39,5 +40,8 @@ module.exports = class APIHandler {
 
 	static getModules() {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.MODULES);
+	}
+	static checkOptionsStatus() {
+		return APIHandler.call(HTTPMETHODS.GET, PATHS.STATUS);
 	}
 };
