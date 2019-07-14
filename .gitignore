@@ -245,3 +245,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/web,node,sass,macos,windows,jetbrains,visualstudiocode
+/studySchedule/dist

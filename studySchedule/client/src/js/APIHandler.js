@@ -3,12 +3,13 @@ const CONFIG = require("../../../config.json");
 const PATHS = {
 	OPTIONS: "option/",
 	MODULES: "module/",
+	SCHEDULES: "informatik/"
 };
 
 const HTTPMETHODS = {
 	GET: "GET",
 	POST: "POST",
-	DELETE: "DELTE",
+	DELETE: "DELETE",
 	PUT: "PUT",
 	OPTIONS: "OPTIONS"
 };
@@ -39,5 +40,9 @@ module.exports = class APIHandler {
 
 	static getModules() {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.MODULES);
+	}
+
+	static getSchedules() {
+		return APIHandler.call(HTTPMETHODS.GET, PATHS.SCHEDULES);
 	}
 };

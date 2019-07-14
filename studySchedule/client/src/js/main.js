@@ -10,7 +10,10 @@ $(document).ready(() => {
 	let mainView = new MainView();
 	let modal = new Modal();
 	$("#optionsButton").click(() => modal.renderOptions());
+	$("#home").click(() => {
+		mainView.initList();
+	});
 
 	//TODO Check if Options already set and only call modal.renderOptions if unset instead of every reload
-	modal.renderOptions();
+	//modal.renderOptions();
 });
