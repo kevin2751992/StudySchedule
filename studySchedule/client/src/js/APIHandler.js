@@ -42,6 +42,7 @@ module.exports = class APIHandler {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.MODULES);
 	}
 	static checkOptionsStatus() {
+		console.log("called CheckOptionStatus");
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.STATUS);
 	}
 };

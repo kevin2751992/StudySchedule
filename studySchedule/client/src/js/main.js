@@ -13,6 +13,6 @@ $(document).ready(() => {
 	$("#optionsButton").click(() => modal.renderOptions());
 
 	let optionsStatus = APIHANDLER.checkOptionsStatus();
-	console.log(optionsStatus);
+	console.log("OptionsStatus", optionsStatus);
 	modal.renderOptions();
 });

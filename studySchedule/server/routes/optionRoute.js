@@ -22,7 +22,7 @@ optionRouter.route("/option")
 					return res.status(201).send(resultOptions);
 				})
 					.catch(err=>{
-						return res.status(500).send(err);
+						return res.status(500).send("Option.find() failed", err);
 					})
 					.finally(()=> {
 						mongoose.disconnect(msg=>{
@@ -83,4 +83,5 @@ optionRouter.route("/option")
 			});
 		return null;
 	});
+
 module.exports = optionRouter;
