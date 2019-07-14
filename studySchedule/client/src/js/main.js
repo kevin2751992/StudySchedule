@@ -11,6 +11,9 @@ $(document).ready(() => {
 	let mainView = new MainView();
 	let modal = new Modal();
 	$("#optionsButton").click(() => modal.renderOptions());
+	$("#home").click(() => {
+		mainView.initList();
+	});
 
 	let optionsStatus = APIHANDLER.checkOptionsStatus();
 	console.log("OptionsStatus", optionsStatus);
