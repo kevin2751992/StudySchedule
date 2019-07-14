@@ -14,7 +14,7 @@
     "build": "mkdirp ./studySchedule/prod && npm run lint && npm run js:min && npm run css && cp -r ./studySchedule/assets/fonts ./studySchedule/client/prod && cp ./studySchedule/client/src/index.html ./studySchedule/client/prod/index.html  ",
     "js:min": " browserify ./studySchedule/client/src/js/functions.js -o ./studySchedule/client/prod/js/main.js ",
     "clean": "npm run clean:dist && rm -rf node_modules",
-    "clean:dist": "rm –rf prod",
+    "clean:dist": "rm -rf ./studySchedule/dist",
     "debug:css": "lessc ./studySchedule/client/src/styles/style.less ./studySchedule/client/prod/styles/style.css ",
     "start-watch": "nodemon ./studySchedule/server/server.jns"
   },
