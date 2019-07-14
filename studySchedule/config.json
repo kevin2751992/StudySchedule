@@ -2,6 +2,6 @@
     "HOST": "localhost",
     "PORT": 8080,
     "PROTOKOLL": "http",
-	"DBURI": "mongodb+srv://userOne:open@studyscheduledb-s6ye8.mongodb.net/test?retryWrites=true&w=majority",
+	"DBURI": "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority",
 	"OPTIONS": { "poolSize": 10, "useNewUrlParser": true }
 }

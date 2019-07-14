@@ -1,6 +1,6 @@
 let mongoose = require("mongoose");
 
-let OptionModel = new mongoose.Schema({
+let Options = new mongoose.Schema({
 
 	minEcts: Number,
 	ectsPerSem: Number,
@@ -8,7 +8,7 @@ let OptionModel = new mongoose.Schema({
 
 });
 
-module.exports = OptionModel;
+module.exports = Options;
 module.exports.optionModelSchema = function (name, collection) {
-	return mongoose.model(name, OptionModel, collection);
+	return mongoose.model(name, Options, collection);
 };

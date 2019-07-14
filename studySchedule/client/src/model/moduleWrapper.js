@@ -10,5 +10,5 @@ let ModuleWrapper = new mongoose.Schema({
 
 module.exports = ModuleWrapper;
 module.exports.moduleWrapperSchema = function (name, collection) {
-	return mongoose.model(name, Modules, collection);
+	return mongoose.model(name, ModuleWrapper, collection);
 };

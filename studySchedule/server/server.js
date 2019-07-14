@@ -19,18 +19,6 @@ let server = express();
 client.connect((error, db) =>{
 	if (error) { console.error(error); process.exit(-1); }
 	console.info("test");
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS, function (err) {
-		if (error) {
-			console.error(err);
-		}
-		console.info("Connection One");
-	});
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS, function (err) {
-		if (error) {
-			console.error(err);
-		}
-		console.info("Connection Two");
-	});
 	console.info("Connected to MongoDB.");
 
 	server.listen(CONFIG.PORT, ()=>console.info("Server started on Port", CONFIG.PORT));

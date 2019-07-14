@@ -2,96 +2,30 @@ const express = require("express");
 const mongoose = require("mongoose");
 // eslint-disable-next-line new-cap
 let moduleRouter = express.Router();
-//informaticRouter.use(require("body-parser").json());
+const CONFIG = require("../../config.json");
 let moduleModel = require("../../client/src/model/module");
 let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
 let modules = moduleModel.moduleModelSchema("Module", "Module");
 
 //Get all InformatikSchedules
-moduleRouter.get("/module", (req, res)=>{
-	let connection;
-	//If State === 2 Then we have already a connection and we can use the current connection
-	if (mongoose.connection.readyState === 2) {
-		connection = mongoose.connection;
-	}
-	else {
-		connection = mongoose.connect(dbUri, { useNewUrlParser: true });
-	}
-	connection
-		.then(()=>{
-			modules.find().exec().then(moduleResult=>{
-				console.log(moduleResult);
-				return res.status(201).send(moduleResult);
-			})
-				.catch(err=>{
-					console.log("Catch Error after query failed");
-					return res.status(500).send(err);
-				})
-				.finally(()=> {
-					mongoose.disconnect(msg=>{
-						console.log("Closed Connection to DB ");
-					});
-				});
+moduleRouter.get("/module", (req, res)=> {
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS).then(()=>{
+		modules.find().exec().then(moduleResult=>{
+			console.log(moduleResult);
+			return res.status(201).send(moduleResult);
 		})
+			.catch(err=>{
+				console.log("Catch Error after query failed");
+				return res.status(500).send(err);
+			})
+			.finally(()=> {
+				mongoose.disconnect(msg=>{
+					console.log("Closed Connection to DB ");
+				});
+			});
+	})
 		.catch(err=>{
 			return res.status(500).send("Error with the ServerConnection", err);
-		});
-});
-//Get Infomatik Wintersemester
-moduleRouter.get("/module/informatik", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then(()=>{
-			modules.find({ fachschaft: "Inf" }).exec().then(infModules=>{
-				console.log(infModules);
-				return res.status(201).send(infModules);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection");
-		});
-});
-
-moduleRouter.get("/module/informatik/wahlpflichtfach", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then(()=>{
-			modules.find({ fachschaft: "Inf" }, { wahlpflicht: "true" }).exec().then(infElective=>{
-				console.log(infElective);
-				return res.status(201).send(infElective);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection");
-		});
-});
-//Get Informatik Sommersemester
-moduleRouter.get("/module/wirtschaft", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then(()=>{
-			modules.find({ fachschaft: "Wirtschaft" }).exec().then(bwlModules=>{
-				console.log(bwlModules);
-				return res.status(201).send(bwlModules);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection");
 		});
 });
 
@@ -119,7 +53,7 @@ moduleRouter.put("/module/:id", (req, res) =>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			modules.find({ name: req.body.name }).exec().then(result=>{
 				if (result) {
@@ -153,7 +87,7 @@ moduleRouter.delete("/module/:id", (req, res) =>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			modules.findByIdAndRemove(req.params.id).exec().then(result=> {
 				return res.status(201).send(result);
@@ -184,7 +118,7 @@ moduleRouter.post("/module", (req, res) =>{
 		}
 		*/
 
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn) => {
 			// eslint-disable-next-line new-cap
 			let newModule = new modules(req.body);
