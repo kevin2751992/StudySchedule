@@ -2,15 +2,7 @@ let mongoose = require("mongoose");
 
 let Img = new mongoose.Schema({
 
-	filename: {
-		type: String,
-		required: true
-	},
-	originalname: {
-		type: String,
-		required: true
-	}
-
+	img: { data: Buffer, contentType: String }
 });
 
 module.exports = Img;
