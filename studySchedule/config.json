@@ -3,5 +3,5 @@
     "PORT": 8080,
     "PROTOKOLL": "http",
 	"DBURI": "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority",
-	"OPTIONS": { "poolSize": 10, "useNewUrlParser": true }
+	"OPTIONS": { "poolSize": 10, "reconnectTries": 1, "connectTimeoutMS": 5000, "socketTimeoutMS": 5000, "family": 4 ,"useNewUrlParser": true }
 }

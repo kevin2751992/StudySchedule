@@ -1,32 +1,39 @@
 const express = require("express");
-const mongoose = require("mongoose");
+var mongoose = require("mongoose");
 const CONFIG = require("../../config.json");
+
 // eslint-disable-next-line new-cap
 let optionRouter = express.Router();
 let OptionModelSchema = require("../../client/src/model/optionModel");
 let Options = OptionModelSchema.optionModelSchema("Options", "Options");
+let connection = null;
 
 optionRouter.route("/option/")
 	//Get Winter and Summer Informatik Schedule
 	.get((req, res)=> {
-		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
-			.then(()=>{
-				Options.find().exec().then(resultOptions=> {
-					console.log(resultOptions);
-					return res.status(200).send(resultOptions);
-				})
-					.catch(err=>{
-						return res.status(500).send("Option.find() failed", err);
+		if (mongoose.connection.readyState === 2) {
+			connection = mongoose.connection;
+		}
+		else {
+			connection = mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
+				.then(()=>{
+					Options.find({}).exec().then(resultOptions=> {
+						console.log(resultOptions);
+						return res.status(200).send(resultOptions);
 					})
-					.finally(()=> {
-						mongoose.disconnect(msg=>{
-							console.log("Closed Connection to DB ");
+						.catch(err=>{
+							return res.status(500).send("Option.find() failed", err);
+						})
+						.finally(()=> {
+							mongoose.disconnect(msg=>{
+								console.log("Closed Connection to DB ");
+							});
 						});
-					});
-			})
-			.catch(err=>{
-				return res.status(500).send("Error with the ServerConnection", err);
-			});
+				})
+				.catch(err=>{
+					return res.status(500).send("Error with the ServerConnection", err);
+				});
+		}
 	})
 
 	.post((req, res) => {
@@ -40,7 +47,7 @@ optionRouter.route("/option/")
 			numberOfSem: 6,
 			}
 			*/
-		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+		mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 			.then((conn) => {
 				let newOptions = new Options(req.body);
 				console.log(req);

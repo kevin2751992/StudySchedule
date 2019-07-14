@@ -9,7 +9,7 @@ let modules = moduleModel.moduleModelSchema("Module", "Module");
 
 //Get all InformatikSchedules
 moduleRouter.get("/module", (req, res)=> {
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS).then(()=>{
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS).then(()=>{
 		modules.find().exec().then(moduleResult=>{
 			console.log(moduleResult);
 			return res.status(201).send(moduleResult);
@@ -53,7 +53,7 @@ moduleRouter.put("/module/:id", (req, res) =>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			modules.find({ name: req.body.name }).exec().then(result=>{
 				if (result) {
@@ -87,7 +87,7 @@ moduleRouter.delete("/module/:id", (req, res) =>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			modules.findByIdAndRemove(req.params.id).exec().then(result=> {
 				return res.status(201).send(result);
@@ -118,7 +118,7 @@ moduleRouter.post("/module", (req, res) =>{
 		}
 		*/
 
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn) => {
 			// eslint-disable-next-line new-cap
 			let newModule = new modules(req.body);
