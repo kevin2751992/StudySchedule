@@ -43,6 +43,11 @@ informaticRouter.route("/informatik/")
 		mongoose.connect(dbUri, { useNewUrlParser: true })
 			.then((conn) => {
 				let studySchedule = new InformaticStudySchedule(req.body);
+				InformaticStudySchedule.find({ name: studySchedule.name }).exec().then(result=>{
+					if (result) {
+						res.status(403).send("Der Schedule mit dem Namen: " + studySchedule.name + "existiert bereits");
+					}
+				});
 				studySchedule.save()
 					.then(doc=>{
 						if (!doc || doc.length === 0) {

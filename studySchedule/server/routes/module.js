@@ -121,6 +121,11 @@ moduleRouter.put("/module/:id", (req, res) =>{
 	}
 	mongoose.connect(dbUri, { useNewUrlParser: true })
 		.then((conn)=>{
+			modules.find({ name: req.body.name }).exec().then(result=>{
+				if (result) {
+					res.status(403).send("Ein Modul mit dem Namen: " + req.body.name + "existiert bereits");
+				}
+			});
 			modules.findById(req.params.id).exec().then(toUpdateModule=>{
 				toUpdateModule.set(req.body);
 				console.log(req.body);
@@ -183,6 +188,12 @@ moduleRouter.post("/module", (req, res) =>{
 		.then((conn) => {
 			// eslint-disable-next-line new-cap
 			let newModule = new modules(req.body);
+			//Check if the Module already exist
+			modules.find({ name: req.body.name }).exec().then(result=>{
+				if (result) {
+					res.status(403).send("Ein Modul mit dem Namen: " + req.body.name + "existiert bereits");
+				}
+			});
 			newModule.save()
 				.then(doc=>{
 					if (!doc || doc.length === 0) {
