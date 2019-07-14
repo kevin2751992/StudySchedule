@@ -7,7 +7,7 @@ let OptionModelSchema = require("../../client/src/model/optionModel");
 let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
 let Options = OptionModelSchema.optionModelSchema("Options", "Options");
 
-optionRouter.route("/option")
+optionRouter.route("/option/")
 	//Get Winter and Summer Informatik Schedule
 	.get((req, res)=>{
 		/*let state = mongoose.connection.readyState;
@@ -19,7 +19,7 @@ optionRouter.route("/option")
 			.then(()=>{
 				Options.find({}).exec().then(resultOptions=>{
 					console.log(resultOptions);
-					return res.status(201).send(resultOptions);
+					return res.status(200).send(resultOptions);
 				})
 					.catch(err=>{
 						return res.status(500).send("Option.find() failed", err);

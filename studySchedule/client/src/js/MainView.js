@@ -40,7 +40,7 @@ module.exports = class MainView extends View {
 					this.render(this);
 				});
 
-				$("#breadcrumbs").text("Ãœbersicht");
+				$("#breadcrumbs").text("Übersicht");
 				if (view.init) {
 					console.info(this.pagination.schedules);
 					view.pagination.updateHeight($(".scheduleCard").height(), $(".scheduleList").height());

@@ -3,8 +3,8 @@ const CONFIG = require("../../../config.json");
 const PATHS = {
 	OPTIONS: "option/",
 	MODULES: "module/",
-	SCHEDULES: "informatik/"
-	STATUS: "status"
+	SCHEDULES: "informatik/",
+	STATUS: "status/"
 };
 
 const HTTPMETHODS = {
@@ -35,18 +35,16 @@ module.exports = class APIHandler {
 	}
 
 	static setOptions(obj) {
-		console.log("called");
 		return APIHandler.call(HTTPMETHODS.POST, PATHS.OPTIONS, obj);
 	}
 
 	static getModules() {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.MODULES);
 	}
-static checkOptionsStatus() {
-		console.log("called CheckOptionStatus");
+	static checkOptionsStatus() {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.STATUS);
-
-static getSchedules() {
-		return APIHandler.call(HTTPMETHODS.GET, PATHS.SCHEDULES)
+	}
+	static getSchedules() {
+		return APIHandler.call(HTTPMETHODS.GET, PATHS.SCHEDULES);
 	}
 };
