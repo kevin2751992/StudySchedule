@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const CONFIG = require("../../config.json");
 // eslint-disable-next-line new-cap
 let optionRouter = express.Router();
 let OptionModelSchema = require("../../client/src/model/optionModel");
@@ -14,14 +15,14 @@ optionRouter.route("/option")
 		if (state === 2) {
 			actualConnection = mongoose.connection;
 		}*/
-		mongoose.connect(dbUri, { useNewUrlParser: true })
+		mongoose.createConnection(dbUri, CONFIG.OPTIONS)
 			.then(()=>{
 				Options.find({}).exec().then(resultOptions=>{
 					console.log(resultOptions);
 					return res.status(201).send(resultOptions);
 				})
 					.catch(err=>{
-						return res.status(500).send(err);
+						return res.status(500).send("Option.find() failed", err);
 					})
 					.finally(()=> {
 						mongoose.disconnect(msg=>{
@@ -54,6 +55,8 @@ optionRouter.route("/option")
 					console.log("Current Entry Count for Options:", count);
 					if (count === 0) {
 						let newOptions = new Options(req.body);
+						console.log(req);
+						console.log("reqBody", req.body);
 						newOptions.save()
 							.then(doc=>{
 								if (!doc || doc.length === 0) {
@@ -80,4 +83,5 @@ optionRouter.route("/option")
 			});
 		return null;
 	});
+
 module.exports = optionRouter;

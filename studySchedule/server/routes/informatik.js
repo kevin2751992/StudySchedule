@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+var fs = require("fs");
 // eslint-disable-next-line new-cap
 let informaticRouter = express.Router();
 //informaticRouter.use(require("body-parser").json());
@@ -43,6 +44,13 @@ informaticRouter.route("/informatik/")
 		mongoose.connect(dbUri, { useNewUrlParser: true })
 			.then((conn) => {
 				let studySchedule = new InformaticStudySchedule(req.body);
+				InformaticStudySchedule.find({ name: studySchedule.name }).exec().then(result=>{
+					if (result) {
+						res.status(403).send("Der Schedule mit dem Namen: " + studySchedule.name + "existiert bereits");
+					}
+				});
+				let buffer = Buffer.from(req.body.img.data, "base64");
+				studySchedule.img.data = buffer;
 				studySchedule.save()
 					.then(doc=>{
 						if (!doc || doc.length === 0) {
