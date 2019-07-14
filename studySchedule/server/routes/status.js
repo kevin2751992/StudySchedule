@@ -5,7 +5,8 @@ const CONFIG = require("../../config.json");
 let statusRouter = express.Router();
 
 statusRouter.route("/status").get(function (req, res) {
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS).then(() => {
+	console.log(CONFIG);
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS).then(() => {
 		mongoose.connection.db.collection("Options").count().then((count)=> {
 			if (count > 0) {
 				console.info("The Collection holds already a Optionsfile", count);
@@ -19,7 +20,7 @@ statusRouter.route("/status").get(function (req, res) {
 			return res.send(err);
 		});
 	}).catch(err=> {
-		return res.send("Connection Error", err);
+		return res.send("Connection Error in statusRoute", err);
 	})
 		.finally(()=>{
 			mongoose.disconnect(msg=>{

@@ -1,17 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
-var fs = require("fs");
+const CONFIG = require("../../config.json");
 // eslint-disable-next-line new-cap
 let informaticRouter = express.Router();
 //informaticRouter.use(require("body-parser").json());
 let StudyScheduleSchema = require("../../client/src/model/studySchedule");
-let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
 let InformaticStudySchedule = StudyScheduleSchema.modelSchema("InformaticStudySchedule", "Informatik");
 
 informaticRouter.route("/informatik/")
 	//Get Winter and Summer Informatik Schedule
 	.get((req, res)=>{
-		mongoose.connect(dbUri, { useNewUrlParser: true })
+		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 			.then((conn)=>{
 				InformaticStudySchedule.find({}).exec().then(schedules=>{
 					console.log(schedules);
@@ -41,7 +40,7 @@ informaticRouter.route("/informatik/")
 			semsters : [SemesterOne, Two ...],
 			}
 			*/
-		mongoose.connect(dbUri, { useNewUrlParser: true })
+		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 			.then((conn) => {
 				let studySchedule = new InformaticStudySchedule(req.body);
 				InformaticStudySchedule.find({ name: studySchedule.name }).exec().then(result=>{
@@ -49,8 +48,8 @@ informaticRouter.route("/informatik/")
 						res.status(403).send("Der Schedule mit dem Namen: " + studySchedule.name + "existiert bereits");
 					}
 				});
-				let buffer = Buffer.from(req.body.img.data, "base64");
-				studySchedule.img.data = buffer;
+				//let buffer = Buffer.from(req.body.img.data, "base64");
+				//studySchedule.img.data = buffer;
 				studySchedule.save()
 					.then(doc=>{
 						if (!doc || doc.length === 0) {
@@ -76,7 +75,7 @@ informaticRouter.put("/informatik/:id", (req, res)=>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			InformaticStudySchedule.findById(req.params.id).exec().then(schedule=>{
 				schedule.set(req.body);
@@ -104,7 +103,7 @@ informaticRouter.delete("/informatik/:id", (req, res)=>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			InformaticStudySchedule.findByIdAndRemove(req.params.id).exec().then(result=> {
 				return res.status(201).send(result);
@@ -122,69 +121,11 @@ informaticRouter.delete("/informatik/:id", (req, res)=>{
 });
 //Get Infomatik Wintersemester
 informaticRouter.get("/informatik/Wintersemester", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			InformaticStudySchedule.findOne({ semesterTiming: "Wintersemester" }).exec().then(schedules=>{
 				console.log(schedules);
 				return res.status(201).send(schedules);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection", err);
-		});
-});
-//Get Informatik Sommersemester
-informaticRouter.get("/informatik/Sommersemester", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Sommersemester" }).exec().then(schedules=>{
-				console.log(schedules);
-				return res.status(201).send(schedules);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection", err);
-		});
-});
-//Get All Modules of Sommersemester
-informaticRouter.get("/informatik/Sommersemester/modules", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Sommersemester" }).exec().then(schedules=>{
-				console.log(schedules.semesters);
-				return res.status(201).send(schedules.semesters);
-			})
-				.catch(err=>{
-					return res.status(500).send(err);
-				})
-				.finally(()=>{
-					mongoose.disconnect();
-				});
-		})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection", err);
-		});
-});
-
-//Get all Modules of Wintersemster
-informaticRouter.get("/informatik/Wintersemester/modules", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
-		.then((conn)=>{
-			InformaticStudySchedule.findOne({ semesterTiming: "Wintersemester" }).exec().then(schedules=>{
-				console.log(schedules.semesters);
-				return res.status(201).send(schedules.semesters);
 			})
 				.catch(err=>{
 					return res.status(500).send(err);
