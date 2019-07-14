@@ -1,32 +1,39 @@
 const express = require("express");
-const mongoose = require("mongoose");
+var mongoose = require("mongoose");
 const CONFIG = require("../../config.json");
+
 // eslint-disable-next-line new-cap
 let optionRouter = express.Router();
 let OptionModelSchema = require("../../client/src/model/optionModel");
-let Option = OptionModelSchema.optionModelSchema("Options", "Options");
+let Options = OptionModelSchema.optionModelSchema("Options", "Options");
+let connection = null;
 
-optionRouter.route("/option")
+optionRouter.route("/option/")
 	//Get Winter and Summer Informatik Schedule
 	.get((req, res)=> {
-		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
-			.then(()=>{
-				Option.find({}).exec().then(resultOptions=> {
-					console.log("TEST2", resultOptions);
-					return res.status(201).send(resultOptions);
-				})
-					.catch(err=>{
-						return res.status(500).send("Option.find() failed", err);
+		if (mongoose.connection.readyState === 2) {
+			connection = mongoose.connection;
+		}
+		else {
+			connection = mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
+				.then(()=>{
+					Options.find({}).exec().then(resultOptions=> {
+						console.log(resultOptions);
+						return res.status(200).send(resultOptions);
 					})
-					.finally(()=> {
-						mongoose.disconnect(msg=>{
-							console.log("Closed Connection to DB ");
+						.catch(err=>{
+							return res.status(500).send("Option.find() failed", err);
+						})
+						.finally(()=> {
+							mongoose.disconnect(msg=>{
+								console.log("Closed Connection to DB ");
+							});
 						});
-					});
-			})
-			.catch(err=>{
-				return res.status(500).send("Error with the ServerConnection", err);
-			});
+				})
+				.catch(err=>{
+					return res.status(500).send("Error with the ServerConnection", err);
+				});
+		}
 	})
 
 	.post((req, res) => {
@@ -40,33 +47,26 @@ optionRouter.route("/option")
 			numberOfSem: 6,
 			}
 			*/
-		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+		mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 			.then((conn) => {
-				mongoose.connection.db.collection("Options").count().then((count)=> {
-					if (count > 0) {
-						console.log.error("Options already defined");
-					}
-					else {
-						let newOptions = new Options(req.body);
-						console.log(req);
-						console.log("reqBody", req.body);
-						newOptions.save()
-							.then(doc=>{
-								if (!doc || doc.length === 0) {
-									return res.status(500).send(doc);
-								}
-								return res.status(201).send({ inserted: JSON.stringify(doc) });
-							})
-							.catch(err=>{
-								return res.status(500).send({ data: JSON.stringify(err) });
-							})
-							.finally(() => {
-								mongoose.disconnect((msg) => {
-									console.log("All connections closed. ", msg);
-								});
-							});
-					}
-				});
+				let newOptions = new Options(req.body);
+				console.log(req);
+				console.log("reqBody", req.body);
+				newOptions.save()
+					.then(doc=>{
+						if (!doc || doc.length === 0) {
+							return res.status(500).send(doc);
+						}
+						return res.status(201).send({ inserted: JSON.stringify(doc) });
+					})
+					.catch(err=>{
+						return res.status(500).send({ data: JSON.stringify(err) });
+					})
+					.finally(() => {
+						mongoose.disconnect((msg) => {
+							console.log("All connections closed. ", msg);
+						});
+					});
 			});
 		return null;
 	});

@@ -1,0 +1,114 @@
+#scheduleViewContainer{
+
+    color: $primary-color-icons;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: "singleSchedule modulesContainer";
+
+    #singleSchedule {
+        grid-area: singleSchedule;
+        display: grid;
+        height: 100%;
+        width: 100%;
+
+        .outerConner{
+            display: grid;
+            background: $accent-color;
+            padding: 10px;
+
+            .innerContainer{
+               background: $secondary-text-color;
+            }
+        }
+    }
+
+    #modulesContainer {
+        background: $accent-color;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: calc(100vh - 80px);
+
+
+        #addModules {
+            background: $primary-color-dark;
+            display: grid;
+            padding: 10px;
+            justify-items: center;
+            align-content: center;
+            border-bottom: 3px solid white;
+        }
+
+        #modulesList {
+            grid-area: modulesContainer;
+            overflow-y: auto;
+            height: 100%;
+            max-height: 100%;
+            width: 100%;
+    
+            display: flex;
+            flex-direction: column;
+            
+            .module {
+                border: 1px dashed white;
+                height: 50px; 
+                width: auto; 
+                display: grid;
+                margin: 2px;
+                grid-template-columns: minmax(100px, 300px) 100px;
+                
+                .descContainer {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column; 
+
+                    &:hover {
+                        background: $divider-color;
+                        cursor: move;
+                    }
+    
+                    .mName, .mECTS {
+                        padding: 0;
+                        margin: 0;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        
+                        -webkit-touch-callout: none;
+                        -webkit-user-select: none;
+                           -moz-user-select: none;
+                                user-select: none; 
+
+                        &:hover {
+                            white-space: unset;
+                        }
+                    }
+
+                }
+
+                .editContainer {
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+ 
+
+
+
+
+
+}
+
+
+    
+    

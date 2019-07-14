@@ -246,3 +246,5 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/web,node,sass,macos,windows,jetbrains,visualstudiocode
 /studySchedule/dist
+/studySchedule/dist/main.min.js
+/studySchedule/dist/style.min.css

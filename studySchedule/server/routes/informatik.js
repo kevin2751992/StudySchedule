@@ -10,7 +10,7 @@ let InformaticStudySchedule = StudyScheduleSchema.modelSchema("InformaticStudySc
 informaticRouter.route("/informatik/")
 	//Get Winter and Summer Informatik Schedule
 	.get((req, res)=>{
-		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+		mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 			.then((conn)=>{
 				InformaticStudySchedule.find({}).exec().then(schedules=>{
 					console.log(schedules);
@@ -40,7 +40,7 @@ informaticRouter.route("/informatik/")
 			semsters : [SemesterOne, Two ...],
 			}
 			*/
-		mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+		mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 			.then((conn) => {
 				let studySchedule = new InformaticStudySchedule(req.body);
 				InformaticStudySchedule.find({ name: studySchedule.name }).exec().then(result=>{
@@ -75,7 +75,7 @@ informaticRouter.put("/informatik/:id", (req, res)=>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			InformaticStudySchedule.findById(req.params.id).exec().then(schedule=>{
 				schedule.set(req.body);
@@ -103,7 +103,7 @@ informaticRouter.delete("/informatik/:id", (req, res)=>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			InformaticStudySchedule.findByIdAndRemove(req.params.id).exec().then(result=> {
 				return res.status(201).send(result);
@@ -121,7 +121,7 @@ informaticRouter.delete("/informatik/:id", (req, res)=>{
 });
 //Get Infomatik Wintersemester
 informaticRouter.get("/informatik/Wintersemester", (req, res)=>{
-	mongoose.createConnection(CONFIG.DBURI, CONFIG.OPTIONS)
+	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
 		.then((conn)=>{
 			InformaticStudySchedule.findOne({ semesterTiming: "Wintersemester" }).exec().then(schedules=>{
 				console.log(schedules);

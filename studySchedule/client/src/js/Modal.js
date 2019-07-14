@@ -58,7 +58,6 @@ module.exports = class Modal extends View {
 						}).then((info) => {
 							console.info(info);
 							modal.closeModal();
-							//TODO Speichern Datenbank implementieren
 						}).catch(err => console.error(err));
 					}
 				});

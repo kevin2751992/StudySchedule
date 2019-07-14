@@ -36,6 +36,46 @@ const HTMLTEMPLATES = {
         <a id="${"delete-" + schedule._id}" href="#" class="deleteSchedule"> <i class="icon-bin2"> </i> </a>
     </div>
     </div>`;
+	},
+
+	scheduleView: (modules) => {
+		return `
+        <div id="scheduleViewContainer"> 
+            <div id="singleSchedule"> </div>
+            <div id="modulesContainer"> 
+                <div id="addModules"> 
+                    <a href="#" id="addModule"> <i class="icon-plus"> </i> </a>
+                </div>
+                <div id="modulesList"> 
+                    ${modules} 
+                </div>
+            </div>
+        </div>
+        `;
+	},
+
+	scheduleCell: (i, j) => {
+		return `
+        <div id="${i}-${j}" class="outerCell">
+            <div class="innerCell"> </div>
+        </div>
+        `;
+	},
+
+	module: (module) => {
+		return `
+        <div class="module">
+            <div class="descContainer" draggable="true"> 
+                <p class="mName"> "Name": ${ module.name } </p>
+                <p class="mECTS"> "ECTS: "${ module.ects } </p>
+            </div>
+            
+            <div class="editContainer"> 
+                <a href="#" id="${"edit-" + module._id}"> <i class="icon-pencil"> </i> </a>
+                <a href="#" id="${"delete-" + module._id}">  <i class="icon-bin2"> </i> </a>
+            </div> 
+        </div>
+        `;
 	}
 };
 
