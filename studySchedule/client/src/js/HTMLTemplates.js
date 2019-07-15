@@ -31,9 +31,9 @@ const HTMLTEMPLATES = {
     <img schedule src="${schedule.imgsrc}" />
     <h3 class="spaceWL spaceWR"> ${schedule.name} </h3>
     <div class="cardoptions spaceWR"> 
-        <a id="${"edit-" + schedule._id}" href="#" class="editSchedule spaceR">  <i class="icon-pencil"> </i> </a>
-        <a id="${"download-" + schedule._id}" href="#" class="downloadSchedule spaceR"> <i class="icon-download"> </i> </a>
-        <a id="${"delete-" + schedule._id}" href="#" class="deleteSchedule"> <i class="icon-bin2"> </i> </a>
+        <a class="edit" data-schedule="${schedule._id}" href="#" class="editSchedule spaceR">  <i class="icon-pencil"> </i> </a>
+        <a class="download" data-schedule="${schedule._id}" href="#" class="downloadSchedule spaceR"> <i class="icon-download"> </i> </a>
+        <a class="delete" data-schedule="${schedule._id}" href="#" class="deleteSchedule"> <i class="icon-bin2"> </i> </a>
     </div>
     </div>`;
 	},

@@ -39,8 +39,7 @@ module.exports = class MainView extends View {
 					this.setHTMLTemplate(HTMLTEMPLATES.schedulelist(this.pagination.getCardsHTML()));
 					this.render(this);
 				});
-
-				$("#breadcrumbs").text("Übersicht");
+				$("#breadcrumbs").text("ï¿½bersicht");
 				if (view.init) {
 					console.info(this.pagination.schedules);
 					view.pagination.updateHeight($(".scheduleCard").height(), $(".scheduleList").height());
@@ -48,6 +47,14 @@ module.exports = class MainView extends View {
 					view.init = false;
 					view.render(view);
 				}
+				$(".delete").click((event) => {
+					//get ModuleID
+					let moduleID = event.target.parentElement.getAttribute("data-schedule");
+					APIHANDLER.deleteModules(moduleID);
+					//rerender
+					view.initList();
+					console.log("current ScheduleId", event.target.parentElement, event.target.parentElement.getAttribute("data-schedule"));
+				});
 			};
 
 			super.setRenderFunction(renderFunc);

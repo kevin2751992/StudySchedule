@@ -41,6 +41,9 @@ module.exports = class APIHandler {
 	static getModules() {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.MODULES);
 	}
+	static deleteModules(id) {
+		return APIHandler.call(HTTPMETHODS.DELETE, PATHS.MODULES + id);
+	}
 	static checkOptionsStatus() {
 		return APIHandler.call(HTTPMETHODS.GET, PATHS.STATUS);
 	}

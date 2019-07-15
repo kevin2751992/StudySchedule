@@ -47,12 +47,14 @@
                 align-self: center;
 
                 i {
+					pointer-events: none;
                     color: $primary-color;
     
                     &:hover {
                         color: $accent-color;
                     }
-                }
+				}
+				
             }
 
         }

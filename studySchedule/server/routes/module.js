@@ -6,10 +6,12 @@ const CONFIG = require("../../config.json");
 let moduleModel = require("../../client/src/model/module");
 let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
 let modules = moduleModel.moduleModelSchema("Module", "Module");
+let connection = null;
 
 //Get all InformatikSchedules
 moduleRouter.get("/module", (req, res)=> {
-	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS).then(()=>{
+	connection = getConnection();
+	connection.then(()=>{
 		modules.find().exec().then(moduleResult=>{
 			console.log(moduleResult);
 			return res.status(201).send(moduleResult);
@@ -19,7 +21,7 @@ moduleRouter.get("/module", (req, res)=> {
 				return res.status(500).send(err);
 			})
 			.finally(()=> {
-				mongoose.disconnect(msg=>{
+				mongoose.connection.close(msg=>{
 					console.log("Closed Connection to DB ");
 				});
 			});
@@ -30,7 +32,8 @@ moduleRouter.get("/module", (req, res)=> {
 });
 
 moduleRouter.get("/module/wirtschaft/wahlpflicht", (req, res)=>{
-	mongoose.connect(dbUri, { useNewUrlParser: true })
+	connection = getConnection();
+	connection
 		.then(()=>{
 			modules.find({ fachschaft: "Wirtschaft" }, { wahlpflicht: "true" }).exec().then(bwlElective=>{
 				console.log(bwlElective);
@@ -40,7 +43,7 @@ moduleRouter.get("/module/wirtschaft/wahlpflicht", (req, res)=>{
 					return res.status(500).send(err);
 				})
 				.finally(()=>{
-					mongoose.disconnect();
+					mongoose.connection.close();
 				});
 		})
 		.catch(err=>{
@@ -53,7 +56,8 @@ moduleRouter.put("/module/:id", (req, res) =>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
+	connection = getConnection();
+	connection
 		.then((conn)=>{
 			modules.find({ name: req.body.name }).exec().then(result=>{
 				if (result) {
@@ -73,7 +77,7 @@ moduleRouter.put("/module/:id", (req, res) =>{
 						return res.status(500).send({ data: JSON.stringify(err) });
 					})
 					.finally(() => {
-						mongoose.disconnect((msg) => {
+						mongoose.connection.close((msg) => {
 							console.log("All connections closed. ", msg);
 						});
 					});
@@ -87,7 +91,8 @@ moduleRouter.delete("/module/:id", (req, res) =>{
 	if (!req.body) {
 		return res.status(400).send("Body is missing");
 	}
-	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
+	connection = getConnection();
+	connection
 		.then((conn)=>{
 			modules.findByIdAndRemove(req.params.id).exec().then(result=> {
 				return res.status(201).send(result);
@@ -96,7 +101,7 @@ moduleRouter.delete("/module/:id", (req, res) =>{
 					return res.status(500).send({ data: JSON.stringify(err) });
 				})
 				.finally(() => {
-					mongoose.disconnect((msg) => {
+					mongoose.connection.close((msg) => {
 						console.log("All connections closed. ", msg);
 					});
 				});
@@ -118,7 +123,8 @@ moduleRouter.post("/module", (req, res) =>{
 		}
 		*/
 
-	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS)
+	connection = getConnection();
+	connection
 		.then((conn) => {
 			// eslint-disable-next-line new-cap
 			let newModule = new modules(req.body);
@@ -139,11 +145,22 @@ moduleRouter.post("/module", (req, res) =>{
 					return res.status(500).send({ data: JSON.stringify(err) });
 				})
 				.finally(() => {
-					mongoose.disconnect((msg) => {
+					mongoose.connection.close((msg) => {
 						console.log("All connections closed. ", msg);
 					});
 				});
 		});
 	return null;
 });
+
+function getConnection() {
+	let connection;
+	if (mongoose.connection.readyState === "2") {
+		console.log("used current Connection");
+		connection = mongoose.connection;
+		return connection;
+	}
+	connection = mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS);
+	return connection;
+}
 module.exports = moduleRouter;
