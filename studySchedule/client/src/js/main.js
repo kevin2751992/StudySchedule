@@ -9,15 +9,17 @@ const APIHANDLER = require("./APIHandler");
 
 //Inital Document Ready (Um sicherzugehen, dass alle Elemnte des DOM vorhanden sind)
 $(document).ready(() => {
-	let mainView = new MainView();
-	let modal = new Modal();
-	$("#optionsButton").click(() => modal.renderOptions());
-	modal.renderOptions();
+	//let mainView = new MainView();
+	//let modal = new Modal();
+	//$("#optionsButton").click(() => modal.renderOptions());
+	//modal.renderOptions();
 	//$("#home").click(() => {
 	//	mainView.initList();
 	//});
-	//let scheduleView = new ScheduleView();
-	//scheduleView.newSchedule();
+	let scheduleView = new ScheduleView();
+	$("#newScheduleButton").click(() => {
+		scheduleView.newSchedule();
+	});
 	//let optionsStatus = APIHANDLER.checkOptionsStatus().then(() => {
 	//	modal.renderOptions();
 	//}).catch(err => console.error(err));

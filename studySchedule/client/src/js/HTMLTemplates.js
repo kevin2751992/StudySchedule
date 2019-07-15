@@ -28,12 +28,18 @@ const HTMLTEMPLATES = {
 
 	schedulecard: (schedule) => {
 		return `<div class="scheduleCard">
-    <img schedule src="${schedule.imgsrc}" />
+    <img schedule src="idon.jpg" />
     <h3 class="spaceWL spaceWR"> ${schedule.name} </h3>
     <div class="cardoptions spaceWR"> 
+<<<<<<< HEAD
         <a class="edit" data-schedule="${schedule._id}" href="#" class="editSchedule spaceR">  <i class="icon-pencil"> </i> </a>
         <a class="download" data-schedule="${schedule._id}" href="#" class="downloadSchedule spaceR"> <i class="icon-download"> </i> </a>
         <a class="delete" data-schedule="${schedule._id}" href="#" class="deleteSchedule"> <i class="icon-bin2"> </i> </a>
+=======
+        <a class="${"edit-" + schedule._id}" href="#" class="editSchedule spaceR">  <i class="icon-pencil"> </i> </a>
+        <a class="${"download-" + schedule._id}" href="#" class="downloadSchedule spaceR"> <i class="icon-download"> </i> </a>
+        <a class="${"delete-" + schedule._id}" href="#" class="deleteSchedule"> <i class="icon-bin2"> </i> </a>
+>>>>>>> a9c642f7e3896f7f324500d4b9f470056630b6e7
     </div>
     </div>`;
 	},
@@ -56,7 +62,7 @@ const HTMLTEMPLATES = {
 
 	scheduleCell: (i, j) => {
 		return `
-        <div id="${i}-${j}" class="outerCell">
+        <div id="${i}-${j}" data-x="${i}" data-y="${j}" class="outerCell">
             <div class="innerCell"> </div>
         </div>
         `;

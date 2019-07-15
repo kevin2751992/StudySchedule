@@ -52,13 +52,17 @@ module.exports = class ScheduleView extends View {
 				view.schedule.css({ "grid-template-rows": grows });
 				view.schedule.css({ "grid-template-columns": gcol });
 
-				for (let i = 0; i < ectsSem; i++) {
-					for (let j = 0; j < (ectsSem / ects); j++) {
-						htmlString += HTMLTEMPLATES.scheduleCell(i, j);
+				for (let x = sem; x > 0; x--) {
+					for (let y = (ectsSem / ects); y > 0; y--) {
+						htmlString += HTMLTEMPLATES.scheduleCell(x, y);
 					}
 				}
 
 				view.schedule.append(htmlString);
+
+				//TODO Drag-N-Drop
+				// Drag von $(".descContainer");
+				//Drag nach $(".innerCell");
 			};
 
 			super.setRenderFunction(renderFunc);
