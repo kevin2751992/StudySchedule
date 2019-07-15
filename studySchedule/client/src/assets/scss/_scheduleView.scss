@@ -14,13 +14,16 @@
         height: 100%;
         width: 100%;
 
-        .outerConner{
+        .outerCell{
             display: grid;
-            background: $accent-color;
+            background: white;
             padding: 10px;
 
-            .innerContainer{
-               background: $secondary-text-color;
+            .innerCell{
+               background: $accent-color;
+               &:hover {
+                    background: $accent-lighten;
+               }
             }
         }
     }

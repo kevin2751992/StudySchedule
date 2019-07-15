@@ -6,27 +6,33 @@ const CONFIG = require("../../config.json");
 let moduleModel = require("../../client/src/model/module");
 let dbUri = "mongodb+srv://userOne:open@studyscheduledb-lkqir.mongodb.net/StudyScheduleDB?retryWrites=true&w=majority";
 let modules = moduleModel.moduleModelSchema("Module", "Module");
+let connection = null;
 
 //Get all InformatikSchedules
 moduleRouter.get("/module", (req, res)=> {
-	mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS).then(()=>{
-		modules.find().exec().then(moduleResult=>{
-			console.log(moduleResult);
-			return res.status(201).send(moduleResult);
+	if (mongoose.connection.readyState === 2) {
+		connection = mongoose.connection;
+	}
+	else {
+		connection = mongoose.connect(CONFIG.DBURI, CONFIG.OPTIONS).then(()=>{
+			modules.find().exec().then(moduleResult=>{
+				console.log(moduleResult);
+				return res.status(201).send(moduleResult);
+			})
+				.catch(err=>{
+					console.log("Catch Error after query failed");
+					return res.status(500).send(err);
+				})
+				.finally(()=> {
+					mongoose.disconnect(msg=>{
+						console.log("Closed Connection to DB ");
+					});
+				});
 		})
 			.catch(err=>{
-				console.log("Catch Error after query failed");
-				return res.status(500).send(err);
-			})
-			.finally(()=> {
-				mongoose.disconnect(msg=>{
-					console.log("Closed Connection to DB ");
-				});
+				return res.status(500).send("Error with the ServerConnection", err);
 			});
-	})
-		.catch(err=>{
-			return res.status(500).send("Error with the ServerConnection", err);
-		});
+	}
 });
 
 moduleRouter.get("/module/wirtschaft/wahlpflicht", (req, res)=>{
